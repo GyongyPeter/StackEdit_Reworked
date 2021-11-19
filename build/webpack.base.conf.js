@@ -6,7 +6,7 @@ var VueLoaderPlugin = require('vue-loader/lib/plugin')
 var vueLoaderConfig = require('./vue-loader.conf')
 var StylelintPlugin = require('stylelint-webpack-plugin')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
@@ -19,20 +19,32 @@ module.exports = {
     fs: 'empty' // jison generated code requires 'fs'
   },
   output: {
-    path: config.build.assetsRoot,
+    path: path.resolve(__dirname, 'dist'),
     filename: '[name].js',
     publicPath: process.env.NODE_ENV === 'production'
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
   resolve: {
-    extensions: ['.js', '.vue', '.json'],
+    extensions: ['.js', '.vue', '.json', ".webpack.js", ".web.js", ".ts", ".tsx"],
     alias: {
       '@': resolve('src')
     }
   },
   module: {
     rules: [
+      {
+        test: /\.(js|jsx|tsx|ts)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'ts-loader',
+            options: {
+              configFile: path.resolve('./tsconfig.json')
+            },
+          },
+        ],
+      },
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
