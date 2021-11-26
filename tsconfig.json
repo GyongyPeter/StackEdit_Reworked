@@ -9,8 +9,5 @@
     "include": [
         "./src/*",
         "./src/**/*"
-    ],
-    "files": [
-        "./src/store/data.ts"
     ]
 }

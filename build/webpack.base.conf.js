@@ -33,18 +33,18 @@ module.exports = {
   },
   module: {
     rules: [
-      {
-        test: /\.(js|jsx|tsx|ts)$/,
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'ts-loader',
-            options: {
-              configFile: path.resolve('./tsconfig.json')
-            },
-          },
-        ],
-      },
+      // {
+      //   test: /\.(js|jsx|tsx|ts)$/,
+      //   exclude: /node_modules/,
+      //   use: [
+      //     {
+      //       loader: 'ts-loader',
+      //       options: {
+      //         configFile: path.resolve('./tsconfig.json')
+      //       },
+      //     },
+      //   ],
+      // },
       {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',

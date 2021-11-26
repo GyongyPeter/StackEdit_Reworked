@@ -108,7 +108,6 @@ import githubProvider from '../../services/providers/githubProvider';
 import gitlabProvider from '../../services/providers/gitlabProvider';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 const tokensToArray = (tokens, filter = () => true) => Object.values(tokens)
   .filter(token => filter(token))
@@ -201,14 +200,12 @@ export default {
         'queue/enqueue',
         async () => {
           await dropboxProvider.openFiles(token, paths);
-          badgeSvc.addBadge('openFromDropbox');
         },
       );
     },
     async saveDropbox(token) {
       try {
         await openSyncModal(token, 'dropboxSave');
-        badgeSvc.addBadge('saveOnDropbox');
       } catch (e) { /* cancel */ }
     },
     async openGoogleDrive(token) {
@@ -217,14 +214,12 @@ export default {
         'queue/enqueue',
         async () => {
           await googleDriveProvider.openFiles(token, files);
-          badgeSvc.addBadge('openFromGoogleDrive');
         },
       );
     },
     async saveGoogleDrive(token) {
       try {
         await openSyncModal(token, 'googleDriveSave');
-        badgeSvc.addBadge('saveOnGoogleDrive');
       } catch (e) { /* cancel */ }
     },
     async openGithub(token) {
@@ -237,7 +232,6 @@ export default {
           'queue/enqueue',
           async () => {
             await githubProvider.openFile(token, syncLocation);
-            badgeSvc.addBadge('openFromGithub');
           },
         );
       } catch (e) { /* cancel */ }
@@ -245,13 +239,11 @@ export default {
     async saveGithub(token) {
       try {
         await openSyncModal(token, 'githubSave');
-        badgeSvc.addBadge('saveOnGithub');
       } catch (e) { /* cancel */ }
     },
     async saveGist(token) {
       try {
         await openSyncModal(token, 'gistSync');
-        badgeSvc.addBadge('saveOnGist');
       } catch (e) { /* cancel */ }
     },
     async openGitlab(token) {
@@ -264,7 +256,6 @@ export default {
           'queue/enqueue',
           async () => {
             await gitlabProvider.openFile(token, syncLocation);
-            badgeSvc.addBadge('openFromGitlab');
           },
         );
       } catch (e) { /* cancel */ }
@@ -272,7 +263,6 @@ export default {
     async saveGitlab(token) {
       try {
         await openSyncModal(token, 'gitlabSave');
-        badgeSvc.addBadge('saveOnGitlab');
       } catch (e) { /* cancel */ }
     },
   },

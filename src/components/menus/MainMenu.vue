@@ -84,11 +84,6 @@
       Print
     </menu-entry>
     <hr>
-    <menu-entry @click.native="badges">
-      <icon-seal slot="icon"></icon-seal>
-      <div><div class="menu-entry__label menu-entry__label--count">{{badgeCount}}/{{featureCount}}</div> Badges</div>
-      <span>List application features and earned badges.</span>
-    </menu-entry>
     <menu-entry @click.native="accounts">
       <icon-key slot="icon"></icon-key>
       <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> Accounts</div>
@@ -164,12 +159,6 @@ export default {
       return Object.values(store.getters['data/tokensByType'])
         .reduce((count, tokensBySub) => count + Object.values(tokensBySub).length, 0);
     },
-    badgeCount() {
-      return store.getters['data/allBadges'].filter(badge => badge.isEarned).length;
-    },
-    featureCount() {
-      return store.getters['data/allBadges'].length;
-    },
   },
   methods: {
     ...mapActions('data', {
@@ -206,11 +195,6 @@ export default {
     async accounts() {
       try {
         await store.dispatch('modal/open', 'accountManagement');
-      } catch (e) { /* Cancel */ }
-    },
-    async badges() {
-      try {
-        await store.dispatch('modal/open', 'badgeManagement');
       } catch (e) { /* Cancel */ }
     },
     async reset() {

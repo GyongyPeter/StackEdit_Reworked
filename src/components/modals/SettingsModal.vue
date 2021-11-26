@@ -38,7 +38,6 @@ import Tab from './common/Tab';
 import CodeEditor from '../CodeEditor';
 import defaultSettings from '../../data/defaults/defaultSettings.yml';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 const emptySettings = `# Add your custom settings here to override the
 # default settings.
@@ -84,7 +83,6 @@ export default {
         await store.dispatch('data/setSettings', settings);
         const customSettings = yaml.safeLoad(settings);
         if (customSettings.shortcuts) {
-          badgeSvc.addBadge('changeShortcuts');
         }
         const computedSettings = store.getters['data/computedSettings'];
         const customSettingsCount = Object
@@ -92,7 +90,6 @@ export default {
           .filter(key => key !== 'shortcuts' && computedSettings[key])
           .length;
         if (customSettingsCount) {
-          badgeSvc.addBadge('changeSettings');
         }
         this.config.resolve(settings);
       }

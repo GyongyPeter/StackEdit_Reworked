@@ -10,8 +10,6 @@ import styledHtmlTemplate from '../data/templates/styledHtmlTemplate.html';
 import styledHtmlWithTocTemplate from '../data/templates/styledHtmlWithTocTemplate.html';
 import jekyllSiteTemplate from '../data/templates/jekyllSiteTemplate.html';
 import constants from '../data/constants';
-import features from '../data/features';
-import badgeSvc from '../services/badgeSvc';
 
 const itemTemplate = (id, data = {}) => ({
   id,
@@ -71,7 +69,6 @@ const toggleLayoutSetting = (name, value, featureId, getters, dispatch) => {
   };
   if (patch[name] !== currentValue) {
     dispatch('patchLayoutSettings', patch);
-    badgeSvc.addBadge(featureId);
   }
 };
 
@@ -214,20 +211,6 @@ export default {
     gitlabTokensBySub: (state, { tokensByType }) => tokensByType.gitlab || {},
     wordpressTokensBySub: (state, { tokensByType }) => tokensByType.wordpress || {},
     zendeskTokensBySub: (state, { tokensByType }) => tokensByType.zendesk || {},
-    badgeCreations: getter('badgeCreations'),
-    badgeTree: (state, { badgeCreations }) => features
-      .map(feature => feature.toBadge(badgeCreations)),
-    allBadges: (state, { badgeTree }) => {
-      const result = [];
-      const processBadgeNodes = nodes => nodes.forEach((node) => {
-        result.push(node);
-        if (node.children) {
-          processBadgeNodes(node.children);
-        }
-      });
-      processBadgeNodes(badgeTree);
-      return result;
-    },
   },
   actions: {
     setServerConf: setter('serverConf'),
@@ -306,6 +289,5 @@ export default {
     addGitlabToken: tokenAdder('gitlab'),
     addWordpressToken: tokenAdder('wordpress'),
     addZendeskToken: tokenAdder('zendesk'),
-    patchBadgeCreations: patcher('badgeCreations'),
   },
 };

@@ -49,10 +49,4 @@ export default {
     store.state.contextMenu.resolve(item);
     await new Promise(resolve => setTimeout(resolve, 1));
   },
-  async expectBadge(featureId, isEarned = true) {
-    await new Promise(resolve => setTimeout(resolve, 1));
-    expect(store.getters['data/allBadges'].filter(badge => badge.featureId === featureId)[0]).toMatchObject({
-      isEarned,
-    });
-  },
 };

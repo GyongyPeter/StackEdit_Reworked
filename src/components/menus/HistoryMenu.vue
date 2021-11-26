@@ -56,8 +56,6 @@ import utils from '../../services/utils';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import syncSvc from '../../services/syncSvc';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
-
 let editorClassAppliers = [];
 let previewClassAppliers = [];
 
@@ -243,7 +241,6 @@ export default {
           if (!value) {
             this.syncLocationId = firstSyncLocation.id;
           } else if (value.id !== firstSyncLocation.id) {
-            badgeSvc.addBadge('chooseHistory');
           }
         }
       },

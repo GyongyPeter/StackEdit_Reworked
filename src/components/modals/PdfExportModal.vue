@@ -27,7 +27,6 @@ import networkSvc from '../../services/networkSvc';
 import googleHelper from '../../services/providers/helpers/googleHelper';
 import modalTemplate from './common/modalTemplate';
 import store from '../../store';
-import badgeSvc from '../../services/badgeSvc';
 
 export default modalTemplate({
   computedLocalSettings: {
@@ -63,7 +62,6 @@ export default modalTemplate({
             timeout: 60000,
           });
           FileSaver.saveAs(body, `${currentFile.name}.pdf`);
-          badgeSvc.addBadge('exportPdf');
         } catch (err) {
           if (err.status === 401) {
             store.dispatch('modal/open', 'sponsorOnly');
