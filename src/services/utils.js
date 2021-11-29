@@ -285,17 +285,6 @@ export default {
   encodeUrlPath(path) {
     return path ? path.split('/').map(encodeURIComponent).join('/') : '';
   },
-  parseGithubRepoUrl(url) {
-    const parsedRepo = url && url.match(/([^/:]+)\/([^/]+?)(?:\.git|\/)?$/);
-    return parsedRepo && {
-      owner: parsedRepo[1],
-      repo: parsedRepo[2],
-    };
-  },
-  parseGitlabProjectPath(url) {
-    const parsedProject = url && url.match(/^https:\/\/[^/]+\/(.+?)(?:\.git|\/)?$/);
-    return parsedProject && parsedProject[1];
-  },
   createHiddenIframe(url) {
     const iframeElt = document.createElement('iframe');
     iframeElt.style.position = 'absolute';

@@ -17,15 +17,6 @@
         <span v-else-if="currentWorkspace.providerId === 'googleDriveWorkspace'">
           <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">Google Drive folder</a>.
         </span>
-        <span v-else-if="currentWorkspace.providerId === 'couchdbWorkspace'">
-          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">CouchDB database</a>.
-        </span>
-        <span v-else-if="currentWorkspace.providerId === 'githubWorkspace'">
-          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitHub repo</a>.
-        </span>
-        <span v-else-if="currentWorkspace.providerId === 'gitlabWorkspace'">
-          <b>{{currentWorkspace.name}}</b> synced with a <a :href="workspaceLocationUrl" target="_blank">GitLab project</a>.
-        </span>
       </div>
       <div class="menu-entry menu-entry--info flex flex--row flex--align-center" v-else>
         <div class="menu-entry__icon menu-entry__icon--disabled">
@@ -89,11 +80,6 @@
       <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> Accounts</div>
       <span>Manage access to your external accounts.</span>
     </menu-entry>
-    <menu-entry @click.native="templates">
-      <icon-code-braces slot="icon"></icon-code-braces>
-      <div><div class="menu-entry__label menu-entry__label--count">{{templateCount}}</div> Templates</div>
-      <span>Configure Handlebars templates for your exports.</span>
-    </menu-entry>
     <menu-entry @click.native="settings">
       <icon-settings slot="icon"></icon-settings>
       <div>Settings</div>
@@ -107,10 +93,6 @@
     <menu-entry @click.native="reset">
       <icon-logout slot="icon"></icon-logout>
       Reset application
-    </menu-entry>
-    <menu-entry @click.native="about">
-      <icon-help-circle slot="icon"></icon-help-circle>
-      About StackEdit
     </menu-entry>
   </div>
 </template>
@@ -152,9 +134,6 @@ export default {
     publishLocationCount() {
       return Object.keys(store.getters['publishLocation/current']).length;
     },
-    templateCount() {
-      return Object.keys(store.getters['data/allTemplatesById']).length;
-    },
     accountCount() {
       return Object.values(store.getters['data/tokensByType'])
         .reduce((count, tokensBySub) => count + Object.values(tokensBySub).length, 0);
@@ -187,11 +166,6 @@ export default {
         await store.dispatch('modal/open', 'settings');
       } catch (e) { /* Cancel */ }
     },
-    async templates() {
-      try {
-        await store.dispatch('modal/open', 'templates');
-      } catch (e) { /* Cancel */ }
-    },
     async accounts() {
       try {
         await store.dispatch('modal/open', 'accountManagement');
@@ -203,10 +177,7 @@ export default {
         localStorage.setItem('resetStackEdit', '1');
         window.location.reload();
       } catch (e) { /* Cancel */ }
-    },
-    about() {
-      store.dispatch('modal/open', 'about');
-    },
+    }
   },
 };
 </script>

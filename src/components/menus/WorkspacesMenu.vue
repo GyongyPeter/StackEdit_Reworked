@@ -13,18 +13,6 @@
       </menu-entry>
     </div>
     <hr>
-    <menu-entry @click.native="addCouchdbWorkspace">
-      <icon-provider slot="icon" provider-id="couchdbWorkspace"></icon-provider>
-      <span>Add a <b>CouchDB</b> workspace</span>
-    </menu-entry>
-    <menu-entry @click.native="addGithubWorkspace">
-      <icon-provider slot="icon" provider-id="githubWorkspace"></icon-provider>
-      <span>Add a <b>GitHub</b> workspace</span>
-    </menu-entry>
-    <menu-entry @click.native="addGitlabWorkspace">
-      <icon-provider slot="icon" provider-id="gitlabWorkspace"></icon-provider>
-      <span>Add a <b>GitLab</b> workspace</span>
-    </menu-entry>
     <menu-entry @click.native="addGoogleDriveWorkspace">
       <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
       <span>Add a <b>Google Drive</b> workspace</span>
@@ -36,7 +24,6 @@
 import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
 import googleHelper from '../../services/providers/helpers/googleHelper';
-import gitlabHelper from '../../services/providers/helpers/gitlabHelper';
 import store from '../../store';
 
 export default {
@@ -53,30 +40,6 @@ export default {
     },
   },
   methods: {
-    async addCouchdbWorkspace() {
-      try {
-        store.dispatch('modal/open', {
-          type: 'couchdbWorkspace',
-        });
-      } catch (e) { /* Cancel */ }
-    },
-    async addGithubWorkspace() {
-      try {
-        store.dispatch('modal/open', {
-          type: 'githubWorkspace',
-        });
-      } catch (e) { /* Cancel */ }
-    },
-    async addGitlabWorkspace() {
-      try {
-        const { serverUrl, applicationId } = await store.dispatch('modal/open', { type: 'gitlabAccount' });
-        const token = await gitlabHelper.addAccount(serverUrl, applicationId);
-        store.dispatch('modal/open', {
-          type: 'gitlabWorkspace',
-          token,
-        });
-      } catch (e) { /* Cancel */ }
-    },
     async addGoogleDriveWorkspace() {
       try {
         const token = await googleHelper.addDriveAccount(true);

@@ -26,8 +26,6 @@ import store from '../store';
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
 import SettingsModal from './modals/SettingsModal';
-import TemplatesModal from './modals/TemplatesModal';
-import AboutModal from './modals/AboutModal';
 import HtmlExportModal from './modals/HtmlExportModal';
 import PdfExportModal from './modals/PdfExportModal';
 import PandocExportModal from './modals/PandocExportModal';
@@ -45,29 +43,6 @@ import GoogleDriveAccountModal from './modals/providers/GoogleDriveAccountModal'
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
 import GoogleDriveWorkspaceModal from './modals/providers/GoogleDriveWorkspaceModal';
 import GoogleDrivePublishModal from './modals/providers/GoogleDrivePublishModal';
-import DropboxAccountModal from './modals/providers/DropboxAccountModal';
-import DropboxSaveModal from './modals/providers/DropboxSaveModal';
-import DropboxPublishModal from './modals/providers/DropboxPublishModal';
-import GithubAccountModal from './modals/providers/GithubAccountModal';
-import GithubOpenModal from './modals/providers/GithubOpenModal';
-import GithubSaveModal from './modals/providers/GithubSaveModal';
-import GithubWorkspaceModal from './modals/providers/GithubWorkspaceModal';
-import GithubPublishModal from './modals/providers/GithubPublishModal';
-import GistSyncModal from './modals/providers/GistSyncModal';
-import GistPublishModal from './modals/providers/GistPublishModal';
-import GitlabAccountModal from './modals/providers/GitlabAccountModal';
-import GitlabOpenModal from './modals/providers/GitlabOpenModal';
-import GitlabPublishModal from './modals/providers/GitlabPublishModal';
-import GitlabSaveModal from './modals/providers/GitlabSaveModal';
-import GitlabWorkspaceModal from './modals/providers/GitlabWorkspaceModal';
-import WordpressPublishModal from './modals/providers/WordpressPublishModal';
-import BloggerPublishModal from './modals/providers/BloggerPublishModal';
-import BloggerPagePublishModal from './modals/providers/BloggerPagePublishModal';
-import ZendeskAccountModal from './modals/providers/ZendeskAccountModal';
-import ZendeskPublishModal from './modals/providers/ZendeskPublishModal';
-import CouchdbWorkspaceModal from './modals/providers/CouchdbWorkspaceModal';
-import CouchdbCredentialsModal from './modals/providers/CouchdbCredentialsModal';
-
 const getTabbables = container => container.querySelectorAll('a[href], button, .textfield, input[type=checkbox]')
   // Filter enabled and visible element
   .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
@@ -77,8 +52,6 @@ export default {
     ModalInner,
     FilePropertiesModal,
     SettingsModal,
-    TemplatesModal,
-    AboutModal,
     HtmlExportModal,
     PdfExportModal,
     PandocExportModal,
@@ -94,29 +67,7 @@ export default {
     GoogleDriveAccountModal,
     GoogleDriveSaveModal,
     GoogleDriveWorkspaceModal,
-    GoogleDrivePublishModal,
-    DropboxAccountModal,
-    DropboxSaveModal,
-    DropboxPublishModal,
-    GithubAccountModal,
-    GithubOpenModal,
-    GithubSaveModal,
-    GithubWorkspaceModal,
-    GithubPublishModal,
-    GistSyncModal,
-    GistPublishModal,
-    GitlabAccountModal,
-    GitlabOpenModal,
-    GitlabPublishModal,
-    GitlabSaveModal,
-    GitlabWorkspaceModal,
-    WordpressPublishModal,
-    BloggerPublishModal,
-    BloggerPagePublishModal,
-    ZendeskAccountModal,
-    ZendeskPublishModal,
-    CouchdbWorkspaceModal,
-    CouchdbCredentialsModal,
+    GoogleDrivePublishModal
   },
   computed: {
     ...mapGetters([

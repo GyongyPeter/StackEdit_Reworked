@@ -44,7 +44,6 @@
         <side-bar></side-bar>
       </div>
     </div>
-    <tour v-if="!light && !layoutSettings.welcomeTourFinished"></tour>
   </div>
 </template>
 
@@ -57,7 +56,6 @@ import Explorer from './Explorer';
 import SideBar from './SideBar';
 import Editor from './Editor';
 import Preview from './Preview';
-import Tour from './Tour';
 import StickyComment from './gutters/StickyComment';
 import CurrentDiscussion from './gutters/CurrentDiscussion';
 import FindReplace from './FindReplace';
@@ -74,7 +72,6 @@ export default {
     SideBar,
     Editor,
     Preview,
-    Tour,
     StickyComment,
     CurrentDiscussion,
     FindReplace,

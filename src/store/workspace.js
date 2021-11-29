@@ -42,12 +42,6 @@ export default {
     mainWorkspace: (state, { workspacesById }) => workspacesById.main,
     currentWorkspace: ({ currentWorkspaceId }, { workspacesById, mainWorkspace }) =>
       workspacesById[currentWorkspaceId] || mainWorkspace,
-    currentWorkspaceIsGit: (state, { currentWorkspace }) =>
-      currentWorkspace.providerId === 'githubWorkspace'
-      || currentWorkspace.providerId === 'gitlabWorkspace',
-    currentWorkspaceHasUniquePaths: (state, { currentWorkspace }) =>
-      currentWorkspace.providerId === 'githubWorkspace'
-      || currentWorkspace.providerId === 'gitlabWorkspace',
     lastSyncActivityKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastSyncActivity`,
     lastFocusKey: (state, { currentWorkspace }) => `${currentWorkspace.id}/lastWindowFocus`,
     mainWorkspaceToken: (state, getters, rootState, rootGetters) =>
@@ -61,12 +55,6 @@ export default {
       switch (currentWorkspace.providerId) {
         case 'googleDriveWorkspace':
           return rootGetters['data/googleTokensBySub'][currentWorkspace.sub];
-        case 'githubWorkspace':
-          return rootGetters['data/githubTokensBySub'][currentWorkspace.sub];
-        case 'gitlabWorkspace':
-          return rootGetters['data/gitlabTokensBySub'][currentWorkspace.sub];
-        case 'couchdbWorkspace':
-          return rootGetters['data/couchdbTokensBySub'][currentWorkspace.id];
         default:
           return mainWorkspaceToken;
       }
@@ -76,10 +64,6 @@ export default {
         case 'googleDriveWorkspace':
         default:
           return 'google';
-        case 'githubWorkspace':
-          return 'github';
-        case 'gitlabWorkspace':
-          return 'gitlab';
       }
     },
     loginToken: (state, { loginType, currentWorkspace }, rootState, rootGetters) => {

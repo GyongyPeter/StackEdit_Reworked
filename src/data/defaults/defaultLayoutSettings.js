@@ -10,5 +10,4 @@ export default () => ({
   findCaseSensitive: false,
   findUseRegexp: false,
   sideBarPanel: 'menu',
-  welcomeTourFinished: false,
 });

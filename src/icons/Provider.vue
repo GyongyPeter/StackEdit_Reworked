@@ -16,16 +16,6 @@ export default {
           return 'google-drive';
         case 'googlePhotos':
           return 'google-photos';
-        case 'githubWorkspace':
-          return 'github';
-        case 'gist':
-          return 'github';
-        case 'gitlabWorkspace':
-          return 'gitlab';
-        case 'bloggerPage':
-          return 'blogger';
-        case 'couchdbWorkspace':
-          return 'couchdb';
         default:
           return this.providerId;
       }
