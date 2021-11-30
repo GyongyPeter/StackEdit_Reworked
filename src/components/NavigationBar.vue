@@ -24,8 +24,6 @@
       <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
         <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
         <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'"><icon-sync></icon-sync></button>
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in publishLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Publish location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
-        <button class="navigation-bar__button navigation-bar__button--publish button" :disabled="!publishLocations.length || isPublishRequested || offline" @click="requestPublish" v-title="'Publish now'"><icon-upload></icon-upload></button>
       </div>
       <!-- Revision -->
       <div class="flex flex--row" v-if="revisionContent">
@@ -50,7 +48,6 @@
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
 import syncSvc from '../services/syncSvc';
-import publishSvc from '../services/publishSvc';
 import animationSvc from '../services/animationSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
@@ -92,7 +89,6 @@ export default {
     ]),
     ...mapState('queue', [
       'isSyncRequested',
-      'isPublishRequested',
       'currentLocation',
     ]),
     ...mapState('layout', [
@@ -107,9 +103,6 @@ export default {
     ]),
     ...mapGetters('syncLocation', {
       syncLocations: 'current',
-    }),
-    ...mapGetters('publishLocation', {
-      publishLocations: 'current',
     }),
     pagedownButtons() {
       return pagedownButtons.map(button => ({
@@ -179,11 +172,6 @@ export default {
     requestSync() {
       if (this.isSyncPossible && !this.isSyncRequested) {
         syncSvc.requestSync(true);
-      }
-    },
-    requestPublish() {
-      if (this.publishLocations.length && !this.isPublishRequested) {
-        publishSvc.requestPublish();
       }
     },
     pagedownClick(name) {

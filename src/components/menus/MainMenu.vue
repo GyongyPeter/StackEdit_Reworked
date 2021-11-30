@@ -41,11 +41,6 @@
       <div><div class="menu-entry__label menu-entry__label--count" v-if="syncLocationCount">{{syncLocationCount}}</div> Synchronize</div>
       <span>Sync your files in the Cloud.</span>
     </menu-entry>
-    <menu-entry @click.native="setPanel('publish')">
-      <icon-upload slot="icon"></icon-upload>
-      <div><div class="menu-entry__label menu-entry__label--count" v-if="publishLocationCount">{{publishLocationCount}}</div>Publish</div>
-      <span>Export your files to the web.</span>
-    </menu-entry>
     <menu-entry @click.native="setPanel('history')">
       <icon-history slot="icon"></icon-history>
       <div>History</div>
@@ -130,9 +125,6 @@ export default {
     },
     syncLocationCount() {
       return Object.keys(store.getters['syncLocation/currentWithWorkspaceSyncLocation']).length;
-    },
-    publishLocationCount() {
-      return Object.keys(store.getters['publishLocation/current']).length;
     },
     accountCount() {
       return Object.values(store.getters['data/tokensByType'])

@@ -7,6 +7,4 @@ export default () => ({
   googleDriveRestrictedAccess: false,
   googleDriveFolderId: '',
   googleDriveWorkspaceFolderId: '',
-  googleDrivePublishFormat: 'markdown',
-  googleDrivePublishTemplate: 'styledHtml',
 });

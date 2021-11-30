@@ -9,13 +9,11 @@ export default {
   state: {
     isEmpty: true,
     isSyncRequested: false,
-    isPublishRequested: false,
     currentLocation: {},
   },
   mutations: {
     setIsEmpty: setter('isEmpty'),
     setIsSyncRequested: setter('isSyncRequested'),
-    setIsPublishRequested: setter('isPublishRequested'),
     setCurrentLocation: setter('currentLocation'),
   },
   actions: {
@@ -55,16 +53,6 @@ export default {
       if (!state.isSyncRequested) {
         commit('setIsSyncRequested', true);
         const unset = () => commit('setIsSyncRequested', false);
-        dispatch('enqueue', () => cb().then(unset, (err) => {
-          unset();
-          throw err;
-        }));
-      }
-    },
-    enqueuePublishRequest({ state, commit, dispatch }, cb) {
-      if (!state.isSyncRequested) {
-        commit('setIsPublishRequested', true);
-        const unset = () => commit('setIsPublishRequested', false);
         dispatch('enqueue', () => cb().then(unset, (err) => {
           unset();
           throw err;

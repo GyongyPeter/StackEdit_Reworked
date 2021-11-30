@@ -112,11 +112,9 @@ export default {
         nodeMap[item.id] = new Node(item, [], true);
       });
       const syncLocationsByFileId = rootGetters['syncLocation/filteredGroupedByFileId'];
-      const publishLocationsByFileId = rootGetters['publishLocation/filteredGroupedByFileId'];
       rootGetters['file/items'].forEach((item) => {
         const locations = [
           ...syncLocationsByFileId[item.id] || [],
-          ...publishLocationsByFileId[item.id] || [],
         ];
         nodeMap[item.id] = new Node(item, locations);
       });

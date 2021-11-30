@@ -550,7 +550,6 @@ export default {
     content,
     labels,
     isDraft,
-    published,
     isPage,
   }) {
     const refreshedToken = await this.refreshToken(token, bloggerScopes);
@@ -581,9 +580,6 @@ export default {
     if (labels) {
       options.body.labels = labels;
     }
-    if (published) {
-      options.body.published = published.toISOString();
-    }
     // If it's an update
     if (postId) {
       options.method = 'PUT';
@@ -605,9 +601,6 @@ export default {
       options.url += 'revert';
     } else {
       options.url += 'publish';
-      if (published) {
-        options.params.publishDate = published.toISOString();
-      }
     }
     return this.$request(refreshedToken, options);
   },

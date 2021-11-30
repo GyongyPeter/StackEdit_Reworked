@@ -125,20 +125,6 @@ export default new Provider({
       driveFileId: driveFile.id,
     };
   },
-  async publish(token, html, metadata, publishLocation) {
-    const driveFile = await googleHelper.uploadFile({
-      token,
-      name: metadata.title,
-      parents: [],
-      media: html,
-      mediaType: publishLocation.templateId ? 'text/html' : undefined,
-      fileId: publishLocation.driveFileId,
-    });
-    return {
-      ...publishLocation,
-      driveFileId: driveFile.id,
-    };
-  },
   async openFiles(token, driveFiles) {
     return utils.awaitSequence(driveFiles, async (driveFile) => {
       // Check if the file exists and open it

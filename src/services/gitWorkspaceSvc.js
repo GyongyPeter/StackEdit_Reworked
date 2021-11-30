@@ -15,7 +15,6 @@ export default {
     const treeFileMap = Object.create(null);
     const treeDataMap = Object.create(null);
     const treeSyncLocationMap = Object.create(null);
-    const treePublishLocationMap = Object.create(null);
 
     tree.filter(({ type, path }) => type === 'blob' && path.indexOf(workspacePath) === 0)
       .forEach((blobEntry) => {
@@ -38,8 +37,6 @@ export default {
             treeFileMap[path] = parentPath;
           } else if (endsWith(path, '.sync')) {
             treeSyncLocationMap[path] = true;
-          } else if (endsWith(path, '.publish')) {
-            treePublishLocationMap[path] = true;
           }
         }
       });
@@ -185,10 +182,6 @@ export default {
       type: 'syncLocation',
       map: treeSyncLocationMap,
       pathMatcher: /^([\s\S]+)\.([\w-]+)\.sync$/,
-    }, {
-      type: 'publishLocation',
-      map: treePublishLocationMap,
-      pathMatcher: /^([\s\S]+)\.([\w-]+)\.publish$/,
     }]
       .forEach(({ type, map, pathMatcher }) => Object.keys(map).forEach((path) => {
         const [, filePath, data] = path.match(pathMatcher) || [];

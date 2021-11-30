@@ -11,7 +11,6 @@ export default {
     'file',
     'folder',
     'syncLocation',
-    'publishLocation',
     'data',
   ],
   localStorageDataIds: [

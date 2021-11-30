@@ -32,7 +32,6 @@ import PandocExportModal from './modals/PandocExportModal';
 import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
 import SyncManagementModal from './modals/SyncManagementModal';
-import PublishManagementModal from './modals/PublishManagementModal';
 import WorkspaceManagementModal from './modals/WorkspaceManagementModal';
 import AccountManagementModal from './modals/AccountManagementModal';
 import SponsorModal from './modals/SponsorModal';
@@ -42,7 +41,6 @@ import GooglePhotoModal from './modals/providers/GooglePhotoModal';
 import GoogleDriveAccountModal from './modals/providers/GoogleDriveAccountModal';
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
 import GoogleDriveWorkspaceModal from './modals/providers/GoogleDriveWorkspaceModal';
-import GoogleDrivePublishModal from './modals/providers/GoogleDrivePublishModal';
 const getTabbables = container => container.querySelectorAll('a[href], button, .textfield, input[type=checkbox]')
   // Filter enabled and visible element
   .cl_filter(el => !el.disabled && el.offsetParent !== null && !el.classList.contains('not-tabbable'));
@@ -58,7 +56,6 @@ export default {
     LinkModal,
     ImageModal,
     SyncManagementModal,
-    PublishManagementModal,
     WorkspaceManagementModal,
     AccountManagementModal,
     SponsorModal,
@@ -67,7 +64,6 @@ export default {
     GoogleDriveAccountModal,
     GoogleDriveSaveModal,
     GoogleDriveWorkspaceModal,
-    GoogleDrivePublishModal
   },
   computed: {
     ...mapGetters([

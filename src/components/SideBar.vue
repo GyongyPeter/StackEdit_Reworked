@@ -15,7 +15,6 @@
       <main-menu v-if="panel === 'menu'"></main-menu>
       <workspaces-menu v-else-if="panel === 'workspaces'"></workspaces-menu>
       <sync-menu v-else-if="panel === 'sync'"></sync-menu>
-      <publish-menu v-else-if="panel === 'publish'"></publish-menu>
       <history-menu v-else-if="panel === 'history'"></history-menu>
       <export-menu v-else-if="panel === 'export'"></export-menu>
       <import-export-menu v-else-if="panel === 'importExport'"></import-export-menu>
@@ -37,7 +36,6 @@ import Toc from './Toc';
 import MainMenu from './menus/MainMenu';
 import WorkspacesMenu from './menus/WorkspacesMenu';
 import SyncMenu from './menus/SyncMenu';
-import PublishMenu from './menus/PublishMenu';
 import HistoryMenu from './menus/HistoryMenu';
 import ImportExportMenu from './menus/ImportExportMenu';
 import WorkspaceBackupMenu from './menus/WorkspaceBackupMenu';
@@ -51,7 +49,6 @@ const panelNames = {
   help: 'Markdown cheat sheet',
   toc: 'Table of contents',
   sync: 'Synchronize',
-  publish: 'Publish',
   history: 'File history',
   importExport: 'Import/export',
   workspaceBackups: 'Workspace backups',
@@ -63,7 +60,6 @@ export default {
     MainMenu,
     WorkspacesMenu,
     SyncMenu,
-    PublishMenu,
     HistoryMenu,
     ImportExportMenu,
     WorkspaceBackupMenu,

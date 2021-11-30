@@ -159,9 +159,6 @@ export default {
     // Delete sync locations
     (store.getters['syncLocation/groupedByFileId'][fileId] || [])
       .forEach(item => store.commit('syncLocation/deleteItem', item.id));
-    // Delete publish locations
-    (store.getters['publishLocation/groupedByFileId'][fileId] || [])
-      .forEach(item => store.commit('publishLocation/deleteItem', item.id));
   },
 
   /**
@@ -253,21 +250,11 @@ export default {
     this.ensureUniqueLocations();
   },
 
-  addPublishLocation(location) {
-    store.commit('publishLocation/setItem', {
-      ...location,
-      id: utils.uid(),
-    });
-
-    // Sanitize the workspace
-    this.ensureUniqueLocations();
-  },
-
   /**
    * Ensure two sync/publish locations of the same file don't have the same hash.
    */
   ensureUniqueLocations(idsToKeep = {}) {
-    ['syncLocation', 'publishLocation'].forEach((type) => {
+    ['syncLocation'].forEach((type) => {
       store.getters[`${type}/items`].forEach((item) => {
         if (!idsToKeep[item.id]
           && store.getters[`${type}/groupedByFileIdAndHash`][item.fileId][item.hash].length > 1

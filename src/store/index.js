@@ -19,7 +19,6 @@ import syncedContent from './syncedContent';
 import userInfo from './userInfo';
 import workspace from './workspace';
 import locationTemplate from './locationTemplate';
-import emptyPublishLocation from '../data/empties/emptyPublishLocation';
 import emptySyncLocation from '../data/empties/emptySyncLocation';
 import constants from '../data/constants';
 
@@ -41,7 +40,6 @@ const store = new Vuex.Store({
     layout,
     modal,
     notification,
-    publishLocation: locationTemplate(emptyPublishLocation),
     queue,
     syncedContent,
     syncLocation: locationTemplate(emptySyncLocation),
@@ -122,7 +120,7 @@ const store = new Vuex.Store({
           result[id] = `/${filePath}.md`;
         } else if (item.type === 'folder') {
           result[id] = pathsByItemId[id];
-        } else if (item.type === 'syncLocation' || item.type === 'publishLocation') {
+        } else if (item.type === 'syncLocation') {
           // locations are stored as paths
           const encodedItem = utils.encodeBase64(utils.serializeObject({
             ...item,

@@ -253,7 +253,6 @@ const isTempFile = (fileId) => {
   }
   const locations = [
     ...store.getters['syncLocation/filteredGroupedByFileId'][fileId] || [],
-    ...store.getters['publishLocation/filteredGroupedByFileId'][fileId] || [],
   ];
   if (locations.length) {
     // If file has sync/publish locations, it's not a temp file
@@ -642,7 +641,6 @@ const syncWorkspace = async (skipContents = false) => {
         ...store.state.file.itemsById,
         ...store.state.folder.itemsById,
         ...store.state.syncLocation.itemsById,
-        ...store.state.publishLocation.itemsById,
         // Deal with contents and data later
       };
 
