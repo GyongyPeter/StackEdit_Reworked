@@ -11,20 +11,10 @@
       <button class="navigation-bar__button navigation-bar__button--stackedit button" v-else tour-step-anchor="menu" @click="toggleSideBar()" v-title="'Toggle side bar'"><icon-provider provider-id="stackedit"></icon-provider></button>
     </div>
     <div class="navigation-bar__inner navigation-bar__inner--right navigation-bar__inner--title flex flex--row">
-      <!-- Spinner -->
-      <div class="navigation-bar__spinner">
-        <div v-if="!offline && showSpinner" class="spinner"></div>
-        <icon-sync-off v-if="offline"></icon-sync-off>
-      </div>
       <!-- Title -->
       <div class="navigation-bar__title navigation-bar__title--fake text-input"></div>
       <div class="navigation-bar__title navigation-bar__title--text text-input" :style="{width: titleWidth + 'px'}">{{title}}</div>
       <input class="navigation-bar__title navigation-bar__title--input text-input" :class="{'navigation-bar__title--focus': titleFocus, 'navigation-bar__title--scrolling': titleScrolling}" :style="{width: titleWidth + 'px'}" @focus="editTitle(true)" @blur="editTitle(false)" @keydown.enter="submitTitle(false)" @keydown.esc.stop="submitTitle(true)" @mouseenter="titleHover = true" @mouseleave="titleHover = false" v-model="title">
-      <!-- Sync/Publish -->
-      <div class="flex flex--row" :class="{'navigation-bar__hidden': styles.hideLocations}">
-        <a class="navigation-bar__button navigation-bar__button--location button" :class="{'navigation-bar__button--blink': location.id === currentLocation.id}" v-for="location in syncLocations" :key="location.id" :href="location.url" target="_blank" v-title="'Synchronized location'"><icon-provider :provider-id="location.providerId"></icon-provider></a>
-        <button class="navigation-bar__button navigation-bar__button--sync button" :disabled="!isSyncPossible || isSyncRequested || offline" @click="requestSync" v-title="'Synchronize now'"><icon-sync></icon-sync></button>
-      </div>
       <!-- Revision -->
       <div class="flex flex--row" v-if="revisionContent">
         <button class="navigation-bar__button navigation-bar__button--revision navigation-bar__button--restore button" @click="restoreRevision">Restore</button>
@@ -47,7 +37,6 @@
 <script>
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 import editorSvc from '../services/editorSvc';
-import syncSvc from '../services/syncSvc';
 import animationSvc from '../services/animationSvc';
 import tempFileSvc from '../services/tempFileSvc';
 import utils from '../services/utils';
@@ -85,10 +74,8 @@ export default {
   computed: {
     ...mapState([
       'light',
-      'offline',
     ]),
     ...mapState('queue', [
-      'isSyncRequested',
       'currentLocation',
     ]),
     ...mapState('layout', [
@@ -110,13 +97,6 @@ export default {
         titleWithShortcut: `${button.title}${getShortcut(button.method)}`,
         iconClass: `icon-${button.icon}`,
       }));
-    },
-    isSyncPossible() {
-      return store.getters['workspace/syncToken'] ||
-        store.getters['syncLocation/current'].length;
-    },
-    showSpinner() {
-      return !store.state.queue.isEmpty;
     },
     titleWidth() {
       if (!this.mounted) {
@@ -168,11 +148,6 @@ export default {
     },
     redo() {
       return editorSvc.clEditor.undoMgr.redo();
-    },
-    requestSync() {
-      if (this.isSyncPossible && !this.isSyncRequested) {
-        syncSvc.requestSync(true);
-      }
     },
     pagedownClick(name) {
       if (store.getters['content/isCurrentEditable']) {

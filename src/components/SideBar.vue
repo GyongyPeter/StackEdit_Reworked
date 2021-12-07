@@ -35,7 +35,6 @@ import { mapActions } from 'vuex';
 import Toc from './Toc';
 import MainMenu from './menus/MainMenu';
 import WorkspacesMenu from './menus/WorkspacesMenu';
-import SyncMenu from './menus/SyncMenu';
 import HistoryMenu from './menus/HistoryMenu';
 import ImportExportMenu from './menus/ImportExportMenu';
 import WorkspaceBackupMenu from './menus/WorkspaceBackupMenu';
@@ -59,7 +58,6 @@ export default {
     Toc,
     MainMenu,
     WorkspacesMenu,
-    SyncMenu,
     HistoryMenu,
     ImportExportMenu,
     WorkspaceBackupMenu,

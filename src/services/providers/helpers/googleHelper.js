@@ -249,14 +249,6 @@ export default {
   signin() {
     return this.startOauth2(driveAppDataScopes);
   },
-  async addDriveAccount(fullAccess = false, sub = null) {
-    const token = await this.startOauth2(getDriveScopes({ driveFullAccess: fullAccess }), sub);
-    return token;
-  },
-  async addBloggerAccount() {
-    const token = await this.startOauth2(bloggerScopes);
-    return token;
-  },
   async addPhotosAccount() {
     const token = await this.startOauth2(photosScopes);
     return token;

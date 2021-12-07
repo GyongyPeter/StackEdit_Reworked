@@ -25,20 +25,16 @@ import store from '../store';
 
 import ModalInner from './modals/common/ModalInner';
 import FilePropertiesModal from './modals/FilePropertiesModal';
-import SettingsModal from './modals/SettingsModal';
 import HtmlExportModal from './modals/HtmlExportModal';
 import PdfExportModal from './modals/PdfExportModal';
 import PandocExportModal from './modals/PandocExportModal';
 import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
-import SyncManagementModal from './modals/SyncManagementModal';
 import WorkspaceManagementModal from './modals/WorkspaceManagementModal';
-import AccountManagementModal from './modals/AccountManagementModal';
 import SponsorModal from './modals/SponsorModal';
 
 // Providers
 import GooglePhotoModal from './modals/providers/GooglePhotoModal';
-import GoogleDriveAccountModal from './modals/providers/GoogleDriveAccountModal';
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
 import GoogleDriveWorkspaceModal from './modals/providers/GoogleDriveWorkspaceModal';
 const getTabbables = container => container.querySelectorAll('a[href], button, .textfield, input[type=checkbox]')
@@ -49,19 +45,15 @@ export default {
   components: {
     ModalInner,
     FilePropertiesModal,
-    SettingsModal,
     HtmlExportModal,
     PdfExportModal,
     PandocExportModal,
     LinkModal,
     ImageModal,
-    SyncManagementModal,
     WorkspaceManagementModal,
-    AccountManagementModal,
     SponsorModal,
     // Providers
     GooglePhotoModal,
-    GoogleDriveAccountModal,
     GoogleDriveSaveModal,
     GoogleDriveWorkspaceModal,
   },

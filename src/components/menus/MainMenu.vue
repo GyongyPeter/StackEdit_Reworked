@@ -25,22 +25,12 @@
         <span><b>{{currentWorkspace.name}}</b> not synced.</span>
       </div>
     </div>
-    <menu-entry v-if="!loginToken" @click.native="signin">
-      <icon-login slot="icon"></icon-login>
-      <div>Sign in with Google</div>
-      <span>Sync your main workspace and unlock functionalities.</span>
-    </menu-entry>
     <menu-entry @click.native="setPanel('workspaces')">
       <icon-database slot="icon"></icon-database>
       <div><div class="menu-entry__label menu-entry__label--count" v-if="workspaceCount">{{workspaceCount}}</div> Workspaces</div>
       <span>Switch to another workspace.</span>
     </menu-entry>
     <hr>
-    <menu-entry @click.native="setPanel('sync')">
-      <icon-sync slot="icon"></icon-sync>
-      <div><div class="menu-entry__label menu-entry__label--count" v-if="syncLocationCount">{{syncLocationCount}}</div> Synchronize</div>
-      <span>Sync your files in the Cloud.</span>
-    </menu-entry>
     <menu-entry @click.native="setPanel('history')">
       <icon-history slot="icon"></icon-history>
       <div>History</div>
@@ -68,17 +58,6 @@
     <menu-entry @click.native="print">
       <icon-printer slot="icon"></icon-printer>
       Print
-    </menu-entry>
-    <hr>
-    <menu-entry @click.native="accounts">
-      <icon-key slot="icon"></icon-key>
-      <div><div class="menu-entry__label menu-entry__label--count">{{accountCount}}</div> Accounts</div>
-      <span>Manage access to your external accounts.</span>
-    </menu-entry>
-    <menu-entry @click.native="settings">
-      <icon-settings slot="icon"></icon-settings>
-      <div>Settings</div>
-      <span>Tweak application and keyboard shortcuts.</span>
     </menu-entry>
     <hr>
     <menu-entry @click.native="setPanel('workspaceBackups')">
@@ -123,26 +102,11 @@ export default {
     workspaceCount() {
       return Object.keys(store.getters['workspace/workspacesById']).length;
     },
-    syncLocationCount() {
-      return Object.keys(store.getters['syncLocation/currentWithWorkspaceSyncLocation']).length;
-    },
-    accountCount() {
-      return Object.values(store.getters['data/tokensByType'])
-        .reduce((count, tokensBySub) => count + Object.values(tokensBySub).length, 0);
-    },
   },
   methods: {
     ...mapActions('data', {
       setPanel: 'setSideBarPanel',
     }),
-    async signin() {
-      try {
-        await googleHelper.signin();
-        syncSvc.requestSync();
-      } catch (e) {
-        // Cancel
-      }
-    },
     async fileProperties() {
       try {
         await store.dispatch('modal/open', 'fileProperties');
@@ -152,16 +116,6 @@ export default {
     },
     print() {
       window.print();
-    },
-    async settings() {
-      try {
-        await store.dispatch('modal/open', 'settings');
-      } catch (e) { /* Cancel */ }
-    },
-    async accounts() {
-      try {
-        await store.dispatch('modal/open', 'accountManagement');
-      } catch (e) { /* Cancel */ }
     },
     async reset() {
       try {

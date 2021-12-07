@@ -13,17 +13,12 @@
       </menu-entry>
     </div>
     <hr>
-    <menu-entry @click.native="addGoogleDriveWorkspace">
-      <icon-provider slot="icon" provider-id="googleDriveWorkspace"></icon-provider>
-      <span>Add a <b>Google Drive</b> workspace</span>
-    </menu-entry>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import MenuEntry from './common/MenuEntry';
-import googleHelper from '../../services/providers/helpers/googleHelper';
 import store from '../../store';
 
 export default {
@@ -40,15 +35,6 @@ export default {
     },
   },
   methods: {
-    async addGoogleDriveWorkspace() {
-      try {
-        const token = await googleHelper.addDriveAccount(true);
-        store.dispatch('modal/open', {
-          type: 'googleDriveWorkspace',
-          token,
-        });
-      } catch (e) { /* Cancel */ }
-    },
     manageWorkspaces() {
       try {
         store.dispatch('modal/open', 'workspaceManagement');
