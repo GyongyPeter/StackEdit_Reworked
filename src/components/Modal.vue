@@ -1,9 +1,5 @@
 <template>
   <div class="modal" v-if="config" @keydown.esc.stop="onEscape" @keydown.tab="onTab" @focusin="onFocusInOut" @focusout="onFocusInOut">
-    <div class="modal__sponsor-banner" v-if="!isSponsor">
-      StackEdit is <a class="not-tabbable" target="_blank" href="https://github.com/benweet/stackedit/">open source</a>, please consider
-      <a class="not-tabbable" href="javascript:void(0)" @click="sponsor">sponsoring</a> for just $5.
-    </div>
     <component v-if="currentModalComponent" :is="currentModalComponent"></component>
     <modal-inner v-else aria-label="Dialog">
       <div class="modal__content" v-html="simpleModal.contentHtml(config)"></div>
@@ -31,8 +27,6 @@ import PandocExportModal from './modals/PandocExportModal';
 import LinkModal from './modals/LinkModal';
 import ImageModal from './modals/ImageModal';
 import WorkspaceManagementModal from './modals/WorkspaceManagementModal';
-import SponsorModal from './modals/SponsorModal';
-
 // Providers
 import GooglePhotoModal from './modals/providers/GooglePhotoModal';
 import GoogleDriveSaveModal from './modals/providers/GoogleDriveSaveModal';
@@ -51,7 +45,6 @@ export default {
     LinkModal,
     ImageModal,
     WorkspaceManagementModal,
-    SponsorModal,
     // Providers
     GooglePhotoModal,
     GoogleDriveSaveModal,
@@ -59,7 +52,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'isSponsor',
     ]),
     ...mapGetters('modal', [
       'config',
@@ -80,19 +72,6 @@ export default {
     },
   },
   methods: {
-    async sponsor() {
-      try {
-        if (!store.getters['workspace/sponsorToken']) {
-          // User has to sign in
-          await store.dispatch('modal/open', 'signInForSponsorship');
-          await googleHelper.signin();
-          syncSvc.requestSync();
-        }
-        if (!store.getters.isSponsor) {
-          await store.dispatch('modal/open', 'sponsor');
-        }
-      } catch (e) { /* cancel */ }
-    },
     onEscape() {
       this.config.reject();
       editorSvc.clEditor.focus();
@@ -153,18 +132,6 @@ export default {
   p {
     line-height: 1.5;
   }
-}
-
-.modal__sponsor-banner {
-  position: fixed;
-  z-index: 1;
-  width: 100%;
-  color: darken($error-color, 10%);
-  background-color: transparentize(lighten($error-color, 33%), 0.075);
-  font-size: 0.9em;
-  line-height: 1.33;
-  text-align: center;
-  padding: 0.25em 1em;
 }
 
 .modal__inner-1 {

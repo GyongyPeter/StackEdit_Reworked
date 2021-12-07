@@ -156,7 +156,6 @@ export default {
       name: (existingToken || {}).name || 'Someone',
       isLogin: !store.getters['workspace/mainWorkspaceToken'] &&
         scopes.includes('https://www.googleapis.com/auth/drive.appdata'),
-      isSponsor: false,
       isDrive: scopes.includes('https://www.googleapis.com/auth/drive') ||
         scopes.includes('https://www.googleapis.com/auth/drive.file'),
       isBlogger: scopes.includes('https://www.googleapis.com/auth/blogger'),
@@ -184,7 +183,6 @@ export default {
       // Restore flags
       Object.assign(token, {
         isLogin: existingToken.isLogin || token.isLogin,
-        isSponsor: existingToken.isSponsor,
         isDrive: existingToken.isDrive || token.isDrive,
         isBlogger: existingToken.isBlogger || token.isBlogger,
         isPhotos: existingToken.isPhotos || token.isPhotos,
@@ -201,7 +199,6 @@ export default {
             idToken: token.idToken,
           },
         });
-        token.isSponsor = res.body.sponsorUntil > Date.now();
       } catch (err) {
         // Ignore
       }

@@ -31,10 +31,6 @@ export default {
     'No',
     'Yes, add suffix',
   ),
-  paymentSuccess: simpleModal(
-    '<h3>Thank you for your payment!</h3><p>Your sponsorship will be active in a minute.</p>',
-    'Ok',
-  ),
   providerRedirection: simpleModal(
     config => `<p>You are about to navigate to the <b>${config.name}</b> authorization page.</p>`,
     'Cancel',
@@ -55,16 +51,6 @@ export default {
     <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
     'Cancel',
     'Ok, sign in',
-  ),
-  signInForSponsorship: simpleModal(
-    `<p>You have to sign in with Google to sponsor.</p>
-    <div class="modal__info"><b>Note:</b> This will sync your main workspace.</div>`,
-    'Cancel',
-    'Ok, sign in',
-  ),
-  sponsorOnly: simpleModal(
-    '<p>This feature is restricted to sponsors as it relies on server resources.</p>',
-    'Ok, I understand',
   ),
   stripName: simpleModal(
     config => `<p><b>${config.item.name}</b> contains illegal characters. Do you want to strip them?</p>`,

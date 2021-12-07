@@ -37,24 +37,11 @@ export default modalTemplate({
       this.config.resolve();
       const currentFile = store.getters['file/current'];
       store.dispatch('queue/enqueue', async () => {
-        const [sponsorToken, html] = await Promise.all([
-          Promise.resolve().then(() => {
-            const tokenToRefresh = store.getters['workspace/sponsorToken'];
-            return tokenToRefresh && googleHelper.refreshToken(tokenToRefresh);
-          }),
-          exportSvc.applyTemplate(
-            currentFile.id,
-            this.allTemplatesById[this.selectedTemplate],
-            true,
-          ),
-        ]);
-
         try {
           const { body } = await networkSvc.request({
             method: 'POST',
             url: 'pdfExport',
             params: {
-              idToken: sponsorToken && sponsorToken.idToken,
               options: JSON.stringify(store.getters['data/computedSettings'].wkhtmltopdf),
             },
             body: html,
@@ -64,7 +51,6 @@ export default modalTemplate({
           FileSaver.saveAs(body, `${currentFile.name}.pdf`);
         } catch (err) {
           if (err.status === 401) {
-            store.dispatch('modal/open', 'sponsorOnly');
           } else {
             console.error(err); // eslint-disable-line no-console
             store.dispatch('notification/error', err);

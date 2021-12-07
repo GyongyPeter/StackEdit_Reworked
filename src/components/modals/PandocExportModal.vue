@@ -44,15 +44,12 @@ export default modalTemplate({
       const currentContent = store.getters['content/current'];
       const { selectedFormat } = this;
       store.dispatch('queue/enqueue', async () => {
-        const tokenToRefresh = store.getters['workspace/sponsorToken'];
-        const sponsorToken = tokenToRefresh && await googleHelper.refreshToken(tokenToRefresh);
 
         try {
           const { body } = await networkSvc.request({
             method: 'POST',
             url: 'pandocExport',
             params: {
-              idToken: sponsorToken && sponsorToken.idToken,
               format: selectedFormat,
               options: JSON.stringify(store.getters['data/computedSettings'].pandoc),
               metadata: JSON.stringify(currentContent.properties),
@@ -64,7 +61,6 @@ export default modalTemplate({
           FileSaver.saveAs(body, `${currentFile.name}.${selectedFormat}`);
         } catch (err) {
           if (err.status === 401) {
-            store.dispatch('modal/open', 'sponsorOnly');
           } else {
             console.error(err); // eslint-disable-line no-console
             store.dispatch('notification/error', err);

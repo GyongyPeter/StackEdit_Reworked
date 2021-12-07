@@ -152,16 +152,6 @@ const store = new Vuex.Store({
       });
       return result;
     },
-    isSponsor: ({ light }, getters) => {
-      if (light) {
-        return true;
-      }
-      if (!getters['data/serverConf'].allowSponsorship) {
-        return true;
-      }
-      const sponsorToken = getters['workspace/sponsorToken'];
-      return sponsorToken ? sponsorToken.isSponsor : false;
-    },
   },
   actions: {
     setOffline: ({ state, commit, dispatch }, value) => {
