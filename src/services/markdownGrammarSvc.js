@@ -115,6 +115,13 @@ export default {
       };
     }
 
+    grammars.main['custom'] = {
+      pattern: new RegExp(`€€€[ \t].+$`, 'gm'),
+      inside: {
+        'customHighlight': new RegExp(`^[€]+`),
+      },
+    };
+
     const list = /^[ \t]*([*+-]|\d+\.)[ \t]/gm;
     const blockquote = {
       pattern: /^\s*>.*(?:\n[ \t]*\S.*)*/gm,
