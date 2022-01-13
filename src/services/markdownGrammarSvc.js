@@ -116,9 +116,9 @@ export default {
     }
 
     grammars.main['custom'] = {
-      pattern: new RegExp(`€€€[ \t].+$`, 'gm'),
+      pattern: new RegExp(`(€€€+[ 123])(.+)$`, 'gm'),
       inside: {
-        'customHighlight': new RegExp(`^[€]+`),
+        'cl cl-hash': new RegExp(`^[€]+[ 123]`),
       },
     };
 

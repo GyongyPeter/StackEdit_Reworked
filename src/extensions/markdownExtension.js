@@ -160,4 +160,25 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
     }
     spanElt.parentNode.replaceChild(checkboxElt, spanElt);
   });
+
+  elt.querySelectorAll('p.custom').cl_each((spanElt_) => {
+    const button = document.createElement('button');
+    button.className = 'custom';
+    button.textContent = spanElt_.parentNode.textContent;
+    button.style.border = '0';
+
+    spanElt_.parentNode.replaceChild(button, spanElt_);
+
+    button.onclick = function() {
+      if (button.textContent == '\u2753\n') {
+        button.textContent = '\u2705';
+      } else
+      if (button.textContent == '\u2705') {
+        button.textContent = '\u274C';
+      } else
+      if (button.textContent == '\u274C') {
+        button.textContent = '\u2753\n';
+      }
+    };
+  });
 });

@@ -43,5 +43,44 @@ editorSvc.$on('inited', () => {
         }, 10);
       }
     }
+
+
+    if (evt.target.classList.contains('custom')) {
+      evt.preventDefault();
+      if (store.getters['content/isCurrentEditable']) {
+        const editorContent = editorSvc.clEditor.getContent();
+        // Use setTimeout to ensure evt.target.checked has the old value
+        setTimeout(() => {
+          // Make sure content has not changed
+          if (editorContent === editorSvc.clEditor.getContent()) {
+            const previewOffset = getPreviewOffset(evt.target);
+            const endOffset = editorSvc.getEditorOffset(previewOffset + 1);
+            if (endOffset != null) {
+              const startOffset = editorContent.lastIndexOf('\n', endOffset) + 1;
+              const line = editorContent.slice(startOffset, endOffset);
+              const match = line.match(/^(\€\€\€)([ 123])(.*)/);
+              if (match) {
+                let newContent = editorContent.slice(0, startOffset);
+                newContent += match[1];
+                
+                if (match[2] === '1') {
+                  newContent += 2;
+                } else
+                if (match[2] === '2') {
+                  newContent += 3;
+                } else
+                if (match[2] === '3') {
+                  newContent += 1;
+                }
+
+                newContent += match[3];
+                newContent += editorContent.slice(endOffset);
+                editorSvc.clEditor.setContent(newContent, true);
+              }
+            }
+          }
+        }, 10);
+      }
+    }
   });
 });

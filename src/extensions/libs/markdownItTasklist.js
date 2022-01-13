@@ -37,4 +37,36 @@ module.exports = (md) => {
       }
     }
   });
+
+  md.core.ruler.after('block', 'tasklist', ({ tokens, Token }) => {
+    for (let i = 2; i < tokens.length; i += 1) {
+      const token = tokens[i];
+      
+      if (token.content
+        && token.content.charCodeAt(0) === 0x20AC /* € */
+        && token.content.charCodeAt(1) === 0x20AC /* € */
+        && token.content.charCodeAt(2) === 0x20AC /* € */
+        ) {
+        const textContent = token.content.slice(4);
+        if (token.content.charCodeAt(3) === 0x31) /* 1 */
+        {
+          token.content = '\u2753'
+        }
+
+        if (token.content.charCodeAt(3) === 0x32) /* 2 */
+        {
+          token.content = '\u2705'
+        }
+
+        if (token.content.charCodeAt(3) === 0x33) /* 3 */
+        {
+          token.content = '\u274C'
+        }
+
+        token.content += ' ' + textContent;
+
+        attrSet(tokens[i - 1], 'class', 'custom');
+      }
+    }
+  });
 };
