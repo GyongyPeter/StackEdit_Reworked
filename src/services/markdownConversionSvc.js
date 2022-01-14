@@ -75,7 +75,6 @@ const startSectionBlockTypeMap = createFlagMap([
   'ordered_list_open',
   'hr',
   'dl_open',
-  'custom',
 ]);
 const listBlockTypeMap = createFlagMap([
   'bullet_list_open',

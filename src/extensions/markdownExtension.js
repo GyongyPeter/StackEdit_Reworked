@@ -7,6 +7,7 @@ import markdownitImgsize from 'markdown-it-imsize';
 import markdownitSub from 'markdown-it-sub';
 import markdownitSup from 'markdown-it-sup';
 import markdownitTasklist from './libs/markdownItTasklist';
+import markdownItThreeStateCheckbox from './libs/markdownItThreeStateCheckbox';
 import markdownitAnchor from './libs/markdownItAnchor';
 import extensionSvc from '../services/extensionSvc';
 
@@ -107,6 +108,9 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   if (options.tasklist) {
     markdown.use(markdownitTasklist);
   }
+  if (options.threeStateCheckbox) {
+    markdown.use(markdownItThreeStateCheckbox);
+  }
   markdown.use(markdownitAnchor);
 
   // Wrap tables into a div for scrolling
@@ -161,24 +165,12 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
     spanElt.parentNode.replaceChild(checkboxElt, spanElt);
   });
 
-  elt.querySelectorAll('p.custom').cl_each((spanElt_) => {
+  elt.querySelectorAll('threeStateCheckbox').cl_each((spanElt_) => {
     const button = document.createElement('button');
-    button.className = 'custom';
+    button.className = 'threeStateCheckbox';
     button.textContent = spanElt_.parentNode.textContent;
     button.style.border = '0';
 
     spanElt_.parentNode.replaceChild(button, spanElt_);
-
-    button.onclick = function() {
-      if (button.textContent == '\u2753\n') {
-        button.textContent = '\u2705';
-      } else
-      if (button.textContent == '\u2705') {
-        button.textContent = '\u274C';
-      } else
-      if (button.textContent == '\u274C') {
-        button.textContent = '\u2753\n';
-      }
-    };
   });
 });

@@ -87,6 +87,7 @@ export default {
       table: true,
       tasklist: true,
       typographer: true,
+      threeStateCheckbox: true,
     },
     emoji: {
       enabled: true,

@@ -115,13 +115,6 @@ export default {
       };
     }
 
-    grammars.main['custom'] = {
-      pattern: new RegExp(`(€€€+[ 123])(.+)$`, 'gm'),
-      inside: {
-        'cl cl-hash': new RegExp(`^[€]+[ 123]`),
-      },
-    };
-
     const list = /^[ \t]*([*+-]|\d+\.)[ \t]/gm;
     const blockquote = {
       pattern: /^\s*>.*(?:\n[ \t]*\S.*)*/gm,
@@ -220,6 +213,7 @@ export default {
     };
 
     const rest = {};
+
     rest.code = {
       pattern: /(`+)[\s\S]*?\1/g,
       inside: {
@@ -343,6 +337,12 @@ export default {
       inside: {
         'cl cl-strong cl-start': /^(_|\*)(__|\*\*)/,
         'cl cl-strong cl-close': /(__|\*\*)(_|\*)$/,
+      },
+    };
+    rest.threeStateCheckbox = {
+      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(€€€+[ 123])(([ \t])(.+)|[ \t]|)$`, 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp(`[€]+[ 123]`),
       },
     };
     if (options.del) {
