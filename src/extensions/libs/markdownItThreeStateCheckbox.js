@@ -14,7 +14,6 @@ module.exports = (md) => {
       for (let i = 2; i < tokens.length; i += 1) {
         const token = tokens[i];
 
-        debugger
         if (token.content &&
           token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+[ 123](([ \t])(.+)|[ \t]|)$/)) {
 

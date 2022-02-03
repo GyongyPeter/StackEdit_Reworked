@@ -34,6 +34,52 @@ editorSvc.$on('inited', () => {
     }
   });
 
+  editorSvc.previewElt.addEventListener('drop', (e) => {
+    e.preventDefault();
+    if (e.target.classList.contains('drag-drop__input')) {
+      const dropZoneElement = e.target.parentNode;
+      const file = e.dataTransfer.files[0];
+      e.target.files = e.dataTransfer.files;
+      console.log(file);
+      console.log(dropZoneElement);
+      console.log(e.target.files);
+  
+      let thumbnailElement = dropZoneElement.querySelector(".drag-drop__thumb");
+
+      if (!thumbnailElement) {
+        thumbnailElement = document.createElement("div");
+        thumbnailElement.classList.add("drag-drop__thumb");
+        dropZoneElement.appendChild(thumbnailElement);
+      }
+  
+      if (file.type.startsWith("image/")) {
+        const reader = new FileReader();
+    
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          let img = new Image();
+          img.src = reader.result;
+          thumbnailElement.style.background = `url('${reader.result}') no-repeat`;
+          thumbnailElement.style.backgroundSize = 'cover';
+
+          const scale = 300 / img.height;
+          thumbnailElement.style.width = `${img.width * scale}px`;
+          thumbnailElement.style.height = `300px`;
+
+          dropZoneElement.style.width = `${img.width * scale}px`;
+          dropZoneElement.style.height = `300px`;
+
+        };
+      } else {
+        thumbnailElement.style.backgroundImage = null;
+      }
+
+      dropZoneElement.classList.remove('drag-drop');
+      dropZoneElement.classList.add('drag-drop__filled');
+      e.target.style.display = 'none';
+    }
+  });
+
   const handleClickEvent = function (evt, regExp, functionReference) {
     evt.preventDefault();
     if (store.getters['content/isCurrentEditable']) {

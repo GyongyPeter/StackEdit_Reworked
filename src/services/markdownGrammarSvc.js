@@ -345,6 +345,12 @@ export default {
         'cl cl-hash': new RegExp(`[€]+[ 123]`),
       },
     };
+    rest.dragDrop = {
+      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(\\$dd)(([ \t])(.+)|[ \t]|)$`, 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp(`\\$dd`),
+      },
+    };
     if (options.del) {
       rest.del = {
         pattern: /(^|[^\w*])(~~)[\s\S]*?\2(?=([^\w*]|$))/gm,

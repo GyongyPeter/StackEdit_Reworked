@@ -10,6 +10,7 @@ import markdownitTasklist from './libs/markdownItTasklist';
 import markdownItThreeStateCheckbox from './libs/markdownItThreeStateCheckbox';
 import markdownitAnchor from './libs/markdownItAnchor';
 import extensionSvc from '../services/extensionSvc';
+import markdownItDragDrop from './libs/markdownItDragDrop';
 
 const coreBaseRules = [
   'normalize',
@@ -111,6 +112,9 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   if (options.threeStateCheckbox) {
     markdown.use(markdownItThreeStateCheckbox);
   }
+  if (options.dragDrop) {
+    markdown.use(markdownItDragDrop);
+  }
   markdown.use(markdownitAnchor);
 
   // Wrap tables into a div for scrolling
@@ -165,12 +169,23 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
     spanElt.parentNode.replaceChild(checkboxElt, spanElt);
   });
 
-  elt.querySelectorAll('threeStateCheckbox').cl_each((spanElt_) => {
-    const button = document.createElement('button');
-    button.className = 'threeStateCheckbox';
-    button.textContent = spanElt_.parentNode.textContent;
-    button.style.border = '0';
+  // elt.querySelectorAll('threeStateCheckbox').cl_each((spanElt_) => {
+  //   debugger
+  //   const button = document.createElement('button');
+  //   button.className = 'threeStateCheckbox';
+  //   button.textContent = spanElt_.parentNode.textContent;
+  //   button.style.border = '0';
 
-    spanElt_.parentNode.replaceChild(button, spanElt_);
+  //   spanElt_.parentNode.replaceChild(button, spanElt_);
+  // });
+
+  elt.querySelectorAll('p.drag-drop').cl_each((spanElt_) => {
+    const dropZone = document.createElement('div');
+    dropZone.className = 'drag-drop';
+    spanElt_.parentNode.replaceChild(dropZone, spanElt_);
+    
+    const input = document.createElement('input');
+    input.className = 'drag-drop__input';
+    dropZone.appendChild(input);
   });
 });
