@@ -186,6 +186,7 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
     
     const input = document.createElement('input');
     input.className = 'drag-drop__input';
+    input.placeholder = 'Drag & drop an image!';
     dropZone.appendChild(input);
   });
 });
