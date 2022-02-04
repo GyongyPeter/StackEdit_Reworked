@@ -46,16 +46,12 @@ editorSvc.$on('inited', () => {
       // thumbnailElement.classList.add("drag-drop__input");
       
       const img_ = document.createElement('img');
-      dropZoneElement.appendChild(img_);
+  
+      const reader = new FileReader();
       if (file.type.startsWith("image/")) {
-        const reader = new FileReader();
 
         reader.readAsDataURL(file);
         reader.onload = () => {
-          dropZoneElement.classList.remove('drag-drop');
-          dropZoneElement.classList.add('drag-drop__filled');
-          e.target.parentNode.replaceChild(img_, e.target);
-
           let img = new Image();
           img.src = reader.result;
           // thumbnailElement.style.background = `url('${reader.result}') no-repeat`;
@@ -73,15 +69,45 @@ editorSvc.$on('inited', () => {
 
           img_.style.width = `${img.width * scale}px`;
           img_.style.height = `300px`;
-          img_style.float = 'left';
 
           dropZoneElement.appendChild(img_);
+          e.target.parentNode.replaceChild(img_, e.target);
+          dropZoneElement.classList.remove('drag-drop');
+          dropZoneElement.classList.add('drag-drop__filled');
         };
       } else {
-        // thumbnailElement.style.backgroundImage = null;
+          const p = document.createElement('p');
+          p.textContent = 'File is not an image!';
+          p.style.fontSize = '15px';
+          p.style.color = 'red';
+          e.target.parentNode.replaceChild(p, e.target);
       }
 
-      // editorSvc.clEditor.setContent(editorSvc.clEditor.getContent() + ' ASD', true);
+      if (store.getters['content/isCurrentEditable']) {
+        const editorContent = editorSvc.clEditor.getContent();
+        // Use setTimeout to ensure e.target.checked has the old value
+        setTimeout(() => {
+          // Make sure content has not changed
+          if (editorContent === editorSvc.clEditor.getContent()) {
+              const previewOffset = getPreviewOffset(dropZoneElement);
+              const startOffset = editorContent.indexOf('$dd', previewOffset);
+              const endOffset =  editorContent.indexOf(']', previewOffset) + 1;
+              const line = editorContent.slice(startOffset, e.target.textContent.length + endOffset);
+              const match = line.match(`^(.?[ \t]|.+[ \t]|)(\\$dd)(([ \t]\\[)(.+)(\\]))(([ \t])(.+)|[ \t]|)$`);
+              debugger
+              if (match) {
+                let newContent = editorContent.slice(0, startOffset);
+                newContent += match[1];
+                newContent += match[2];
+                newContent += match[4];
+                newContent += reader.result.substring(0, 40) + "......";
+                newContent += match[6];
+                newContent += editorContent.slice(endOffset);
+                editorSvc.clEditor.setContent(newContent, true);
+              }
+          }
+        }, 10);
+      }
     }
   });
 

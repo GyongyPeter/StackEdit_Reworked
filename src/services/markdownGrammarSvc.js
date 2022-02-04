@@ -315,6 +315,13 @@ export default {
         'cl cl-strong cl-close': /(__|\*\*)$/,
       },
     };
+    rest.dragDrop = {
+      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(\\$dd)([ \t]\\[(.+)\\])(([ \t])(.+)|[ \t]|)$`, 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp(`\\$dd`),
+        'drag-drop-link': new RegExp(`([ \t]\\[(.+)\\])`)
+      },
+    };
     rest.em = {
       pattern: /(^|[^\w*])(_|\*)(?![_*])[\s\S]*?\2(?=([^\w*]|$))/gm,
       lookbehind: true,
@@ -343,12 +350,6 @@ export default {
       pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(€€€+[ 123])(([ \t])(.+)|[ \t]|)$`, 'gm'),
       inside: {
         'cl cl-hash': new RegExp(`[€]+[ 123]`),
-      },
-    };
-    rest.dragDrop = {
-      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(\\$dd)(([ \t])(.+)|[ \t]|)$`, 'gm'),
-      inside: {
-        'cl cl-hash': new RegExp(`\\$dd`),
       },
     };
     if (options.del) {
