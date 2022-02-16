@@ -14,9 +14,12 @@ module.exports = (md) => {
     for (let i = 2; i < tokens.length; i += 1) {
       const token = tokens[i];
 
-      if (token.content &&
-        token.content.match(`^(.?[ \t]|.+[ \t]|)(\\$dd)([ \t]\\[(.+)\\])(([ \t])(.+)|[ \t]|)$`)) {
-          token.content = "";
+      const match = token.content.match(`^((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`);
+      if (token.content && match) {
+        // token.content = "";
+        // for (let j = 0; j < match.length; j++) {
+        //     token.content += match[j];
+        // }
 
         attrSet(tokens[i - 1], 'class', 'drag-drop');
       }

@@ -180,13 +180,26 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
   // });
 
   elt.querySelectorAll('p.drag-drop').cl_each((spanElt_) => {
+    const innerHtml = spanElt_.innerHTML;
+    const match = innerHtml.match(`^((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`);
+
     const dropZone = document.createElement('div');
     dropZone.className = 'drag-drop';
     spanElt_.parentNode.replaceChild(dropZone, spanElt_);
-    
+
     const input = document.createElement('input');
     input.className = 'drag-drop__input';
     input.placeholder = 'Drag & drop an image!';
     dropZone.appendChild(input);
+    if (match) {
+      const pBefore = document.createElement('p');
+      pBefore.innerHTML = match[1];
+      
+      const pAfter = document.createElement('p');
+      pAfter.innerHTML = match[9];
+
+      dropZone.parentNode.insertBefore(pBefore, dropZone);
+      dropZone.parentNode.appendChild(pAfter);
+    }
   });
 });

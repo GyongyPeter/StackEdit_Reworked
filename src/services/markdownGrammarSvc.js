@@ -316,10 +316,10 @@ export default {
       },
     };
     rest.dragDrop = {
-      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(\\$dd)([ \t]\\[(.+)\\])(([ \t])(.+)|[ \t]|)$`, 'gm'),
+      pattern: new RegExp(`(^|^$dd)((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`, 'gm'),
       inside: {
         'cl cl-hash': new RegExp(`\\$dd`),
-        'drag-drop-link': new RegExp(`([ \t]\\[(.+)\\])`)
+        'drag-drop-link': new RegExp(`(\\[(.+|.?)\\])`)
       },
     };
     rest.em = {
@@ -443,3 +443,4 @@ export default {
     return grammars;
   },
 };
+10
