@@ -187,6 +187,13 @@ export default {
         },
       };
     }
+    defs.embedYt = {
+      pattern: new RegExp(`^(\\s*\\\S*)([ \t]*){(YT|yt)}:[ \t]\\((.*)(youtube.com)(.*)\\)(.*)$`, 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp(`{(YT|yt)}:`),
+        'drag-drop-link': new RegExp(`\\((.*)youtube(.*)\\)`)
+      },
+    };
     defs.linkdef = {
       pattern: /^ {0,3}\[.*?\]:.*$/gm,
       inside: {
@@ -347,7 +354,7 @@ export default {
       },
     };
     rest.threeStateCheckbox = {
-      pattern: new RegExp(`^(.?[ \t]|.+[ \t]|)(€€€+[ 123])(([ \t])(.+)|[ \t]|)$`, 'gm'),
+      pattern: new RegExp(`^(.*)(€€€+[ 123])(.*)$`, 'gm'),
       inside: {
         'cl cl-hash': new RegExp(`[€]+[ 123]`),
       },

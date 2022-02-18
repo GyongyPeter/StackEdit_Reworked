@@ -57,3 +57,14 @@ new Vue({
   store,
   render: h => h(App),
 });
+
+// window.addEventListener('handleWhenDragDropped', () => {
+//   setTimeout(() => {
+//     uploadReady.onEvent('filname', 'url');
+//   }, 5000);
+// });
+
+// // TODO esemény legyen
+// uploadReady() {
+//   return { filname: 'asd', url: 'asd' }
+// }

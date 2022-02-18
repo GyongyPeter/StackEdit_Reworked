@@ -26,6 +26,10 @@ editorSvc.$on('inited', () => {
     if (evt.target.classList.contains('threeStateCheckbox')) {
       handleClickEvent(evt, regExpThreeStateCheckbox, handleThreeStateCheckboxContent);
     }
+
+    if (evt.target.nodeName === 'LI') {
+      handleClickEvent(evt, regExpThreeStateCheckbox, handleThreeStateCheckboxContent);
+    }
   });
 
   editorSvc.previewElt.addEventListener('mouseover', (evt) => {
@@ -36,14 +40,17 @@ editorSvc.$on('inited', () => {
 
 
   editorSvc.previewElt.addEventListener('drop', (e) => {
+    // handleWhenUpload({name: file.name, byteCode})
     e.preventDefault();
     if (e.target.classList.contains('drag-drop__input')) {
       const dropZoneElement = e.target.parentNode;
       const file = e.dataTransfer.files[0];
 
-
+// uploadReady.onEvent(handleWhenUploadReady) 
+// handleWhenUploadReady() => {
+  
+// }
       const img_ = document.createElement('img');
-
       const reader = new FileReader();
       if (file.type.startsWith("image/")) {
 
@@ -159,7 +166,7 @@ editorSvc.$on('inited', () => {
 
     newContent += match[3];
 
-    newContent += editorContent.slice(endOffset);
+    newContent += editorContent.slice(endOffset - 1);
     editorSvc.clEditor.setContent(newContent, true);
   }
 });

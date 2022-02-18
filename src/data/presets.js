@@ -88,7 +88,8 @@ export default {
       tasklist: true,
       typographer: true,
       threeStateCheckbox: true,
-      dragDrop: true
+      dragDrop: true,
+      embedYt: true
     },
     emoji: {
       enabled: true,
