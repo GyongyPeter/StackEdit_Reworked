@@ -15,15 +15,15 @@ module.exports = (md) => {
         const token = tokens[i];
 
         if (token.content &&
-          token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+[ 123](([ \t])(.+)|[ \t]|)$/)) {
+          token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+[ 123][\s\S]*$/gm)) {
 
-          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+1(([ \t])(.+)|[ \t]|)$/)) {
+          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+1[\s\S]*$/gm)) {
             token.content = token.content.replace("€€€1", '\u2753');
           } else
-          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+2(([ \t])(.+)|[ \t]|)$/)) {
+          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+2[\s\S]*$/gm)) {
             token.content = token.content.replace("€€€2", '\u2705');
           } else
-          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+3(([ \t])(.+)|[ \t]|)$/)) {
+          if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+3[\s\S]*$/gm)) {
             token.content = token.content.replace("€€€3", '\u274C');
           }
   

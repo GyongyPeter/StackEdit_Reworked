@@ -183,18 +183,12 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
   //   spanElt_.parentNode.replaceChild(button, spanElt_);
   // });
 
-  elt.querySelectorAll('p.drag-drop').cl_each((spanElt_) => {
+  elt.querySelectorAll('p').cl_each((spanElt_) => {
     const innerHtml = spanElt_.innerHTML;
+    const innerText = spanElt_.innerText;
     const match = innerHtml.match(`^((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`);
+    const match2 = innerText.match(`^([\\s\\S]*)\\$dd[ \\t]\\[([\\s\\S]*)\\]([\\s\\S]*)$`);
 
-    const dropZone = document.createElement('div');
-    dropZone.className = 'drag-drop';
-    spanElt_.parentNode.replaceChild(dropZone, spanElt_);
-
-    const input = document.createElement('input');
-    input.className = 'drag-drop__input';
-    input.placeholder = 'Drag & drop an image!';
-    dropZone.appendChild(input);
     if (match) {
       const pBefore = document.createElement('p');
       pBefore.innerHTML = match[1];
@@ -202,8 +196,80 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
       const pAfter = document.createElement('p');
       pAfter.innerHTML = match[9];
 
-      dropZone.parentNode.insertBefore(pBefore, dropZone);
-      dropZone.parentNode.appendChild(pAfter);
+      if (match2[2] != '') {
+        // Delete /n character from start and end if exist
+        if (match2[2][0] == '\n') {
+          match2[2] = match2[2].substring(1);
+        }
+        
+        if (match2[2][match2[2].length - 1] == '\n') {
+          match2[2] = match2[2].substring(0, match2[2].length - 1);
+        }
+        const dropZone = document.createElement('div');
+        spanElt_.parentNode.replaceChild(dropZone, spanElt_);
+        window.addEventListener('getFileUrlEvent', (e) => {
+          if (!dropZone.classList.contains('drag-drop__filled')) {
+            if (e.detail.url && (e.detail.url.includes('jpg') || e.detail.url.includes('jpeg') || e.detail.url.includes('png') || e.detail.url.includes('gif'))) {
+              const img = document.createElement('img');
+              img.src = e.detail.url;
+
+              const scale = 300 / img.height;
+              dropZone.style.width = `${img.width * scale}px`;
+              img.style.height = `300px`;
+
+              if (dropZone.lastChild) {
+                dropZone.replaceChild(img, dropZone.lastChild);
+              } else {
+                dropZone.appendChild(img);
+              }
+              dropZone.parentNode.insertBefore(pBefore, dropZone);
+              dropZone.parentNode.appendChild(pAfter);
+            } else if (e.detail.url) {
+              const a = document.createElement('a');
+              a.text = e.detail.fileName;
+              a.href = e.detail.url;
+              if (dropZone.lastChild) {
+                dropZone.replaceChild(a, dropZone.lastChild);
+              } else {
+                dropZone.appendChild(a);
+              }
+              dropZone.parentNode.insertBefore(pBefore, dropZone);
+              dropZone.parentNode.appendChild(pAfter);
+            } else {
+              const p = document.createElement('p');
+              p.textContent = `'${e.detail.fileName}' is not exists!`;
+              p.style.color = 'red';
+              if (dropZone.lastChild) {
+                dropZone.replaceChild(p, dropZone.lastChild);
+              } else {
+                dropZone.appendChild(p);
+              }
+              dropZone.parentNode.insertBefore(pBefore, dropZone);
+              dropZone.parentNode.appendChild(pAfter);
+            }
+          }
+
+          dropZone.className = 'drag-drop__filled';
+        });
+
+        const event_getUrlByFileName = new CustomEvent('getUrlByFileName', {
+          detail: {
+            fileName: match2[2]
+          }
+        });
+
+        window.dispatchEvent(event_getUrlByFileName);
+      } else {
+        const dropZone = document.createElement('div');
+        spanElt_.parentNode.replaceChild(dropZone, spanElt_);
+        dropZone.className = 'drag-drop';
+        const input = document.createElement('input');
+        input.className = 'drag-drop__input';
+        input.placeholder = 'Drag & drop a file!';
+        dropZone.appendChild(input);
+        dropZone.parentNode.insertBefore(pBefore, dropZone);
+        dropZone.parentNode.appendChild(pAfter);
+      }
     }
   });
 
@@ -217,7 +283,6 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
       iFrame.className = 'yt-embed';
       spanElt_.parentNode.replaceChild(iFrame, spanElt_);
 
-      debugger
       if (match[1] && match !== '' || match[2] && match[2] !== '') {
         const p = document.createElement('p');
         const idx1 = innerHtml.indexOf('{yt}: ');

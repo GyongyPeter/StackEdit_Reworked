@@ -58,13 +58,53 @@ new Vue({
   render: h => h(App),
 });
 
-// window.addEventListener('handleWhenDragDropped', () => {
-//   setTimeout(() => {
-//     uploadReady.onEvent('filname', 'url');
-//   }, 5000);
-// });
 
-// // TODO esemény legyen
-// uploadReady() {
-//   return { filname: 'asd', url: 'asd' }
-// }
+window.addEventListener('handleWhenDragDropped', function (e) {
+  setTimeout(() => {
+    const images = [
+      { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg'},
+      { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg'},
+      { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg'},
+      { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg'},
+      { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf'},
+    ];
+
+    let randomFileIdx = e.detail.randomFile;
+    const eventWhenUploadIsReady = new CustomEvent('handleWhenUploadIsReady', {
+      detail: {
+        fileName: images[randomFileIdx].fileName,
+        url: images[randomFileIdx].url,
+      }
+    });
+
+    window.dispatchEvent(eventWhenUploadIsReady);
+  }, 10);
+}, false);
+
+window.addEventListener('getUrlByFileName', function (e) {
+  const images = [
+    { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg'},
+    { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg'},
+    { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg'},
+    { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg'},
+    { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf'},
+  ];
+
+  const fileName = e.detail.fileName;
+  const image = images.find(image => image.fileName == fileName);
+
+  let url;
+  if (image) {
+    url = image.url;
+  }
+
+  const getFileUrlEvent = new CustomEvent('getFileUrlEvent', {
+    detail: {
+      fileName: fileName,
+      url: url
+    }
+  });
+
+  window.dispatchEvent(getFileUrlEvent);
+});
+

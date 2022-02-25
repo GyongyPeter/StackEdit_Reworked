@@ -187,7 +187,9 @@ export default {
         },
       };
     }
+
     defs.embedYt = {
+      // /^([\s\S]*){(YT|yt)}:[ \t]\((\S*)(youtube\.com)(\S*)\)([\s\S]*)$/gm -> formatting lose in editor (e.g. strong)
       pattern: new RegExp(`^(\\s*\\\S*)([ \t]*){(YT|yt)}:[ \t]\\((.*)(youtube.com)(.*)\\)(.*)$`, 'gm'),
       inside: {
         'cl cl-hash': new RegExp(`{(YT|yt)}:`),
@@ -322,13 +324,6 @@ export default {
         'cl cl-strong cl-close': /(__|\*\*)$/,
       },
     };
-    rest.dragDrop = {
-      pattern: new RegExp(`(^|^$dd)((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`, 'gm'),
-      inside: {
-        'cl cl-hash': new RegExp(`\\$dd`),
-        'drag-drop-link': new RegExp(`(\\[(.+|.?)\\])`)
-      },
-    };
     rest.em = {
       pattern: /(^|[^\w*])(_|\*)(?![_*])[\s\S]*?\2(?=([^\w*]|$))/gm,
       lookbehind: true,
@@ -353,10 +348,18 @@ export default {
         'cl cl-strong cl-close': /(__|\*\*)(_|\*)$/,
       },
     };
+
     rest.threeStateCheckbox = {
       pattern: new RegExp(`^(.*)(€€€+[ 123])(.*)$`, 'gm'),
       inside: {
         'cl cl-hash': new RegExp(`[€]+[ 123]`),
+      },
+    };
+    rest.dragDrop = {
+      pattern: new RegExp(`(^|^$dd)((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`, 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp(`\\$dd`),
+        'drag-drop-link': new RegExp(`(\\[(.+|.?)\\])`)
       },
     };
     if (options.del) {
