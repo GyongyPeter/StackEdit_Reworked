@@ -344,7 +344,6 @@
 }
 
 .drag-drop__filled {
-  display: flex;
   align-items: left;
   justify-content: left;
   text-align: left;
@@ -365,4 +364,19 @@
 
 .drag-drop-link {
   font-size: 10px;
+}
+
+.in-progress-border {
+  width: 304px;
+  height: 34px;
+  border: 2px solid #009578;
+}
+
+.in-progress-bar {
+  width: 1px;
+  height: 30px;
+  background-color: #04aa6d;
+  text-align: center;
+  color: white;
+  max-width: 300px;
 }

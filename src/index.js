@@ -61,33 +61,48 @@ new Vue({
 
 window.addEventListener('handleWhenDragDropped', function (e) {
   setTimeout(() => {
+
     const images = [
-      { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg'},
-      { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg'},
-      { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg'},
-      { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg'},
-      { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf'},
+      { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg' },
+      { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg' },
+      { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg' },
+      { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg' },
+      { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf' },
     ];
 
-    let randomFileIdx = e.detail.randomFile;
-    const eventWhenUploadIsReady = new CustomEvent('handleWhenUploadIsReady', {
-      detail: {
-        fileName: images[randomFileIdx].fileName,
-        url: images[randomFileIdx].url,
-      }
-    });
+    const randomFileIdx = e.detail.randomFile;
+    const callInProgress = function (i) {
+      let eventWhenUploadIsInProgress = new CustomEvent('handleWhenUploadIsInProgress', {
+        detail: {
+          totalBytes: e.detail.fileSize,
+          uploadedBytes: e.detail.fileSize * i / 100,
+          isFailed: false,
+          fileName: images[randomFileIdx].fileName,
+          url: images[randomFileIdx].url,
+        }
+      });
+  
+      window.dispatchEvent(eventWhenUploadIsInProgress);
 
-    window.dispatchEvent(eventWhenUploadIsReady);
-  }, 10);
+      setTimeout(() => {
+        if (i <= 100) {
+          i = i + 1;
+          callInProgress(i)
+        }
+      }, 40)
+    }
+
+    callInProgress(1);
+  }, 10)
 }, false);
 
 window.addEventListener('getUrlByFileName', function (e) {
   const images = [
-    { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg'},
-    { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg'},
-    { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg'},
-    { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg'},
-    { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf'},
+    { fileName: 'summerRoad.jpg', url: 'https://wallpapercave.com/wp/wp4573457.jpg' },
+    { fileName: 'winterRoad.jpg', url: 'https://wallpaperaccess.com/full/3623082.jpg' },
+    { fileName: 'springRoad.jpg', url: 'https://i.pinimg.com/originals/97/3d/49/973d4981c5d22e03853b9e3986cce09f.jpg' },
+    { fileName: 'autumnRoad.jpg', url: 'https://wallpaperaccess.com/full/1730650.jpg' },
+    { fileName: 'document.pdf', url: 'https://www.orimi.com/pdf-test.pdf' },
   ];
 
   const fileName = e.detail.fileName;
@@ -107,4 +122,3 @@ window.addEventListener('getUrlByFileName', function (e) {
 
   window.dispatchEvent(getFileUrlEvent);
 });
-
