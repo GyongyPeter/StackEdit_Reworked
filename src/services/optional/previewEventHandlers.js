@@ -88,19 +88,20 @@ editorSvc.$on('inited', () => {
                     }
                     newContent += match[8] + match[9];
                     newContent += editorContent.slice(endOffset);
-      
+
                     editorSvc.clEditor.setContent(newContent, true);
+
                     if (url && (url.includes('jpg') || url.includes('jpeg') || url.includes('png') || url.includes('gif'))) {
                       const img = document.createElement('img');
                       img.src = url;
-      
+
                       const scale = 300 / img.height;
                       dropZoneElement.style.width = `${img.width * scale}px`;
                       dropZoneElement.style.height = `300px`;
-      
+
                       img.style.width = `${img.width * scale}px`;
                       img.style.height = `300px`;
-      
+
                       dropZoneElement.appendChild(img);
                       e.target.parentNode.replaceChild(img, e.target);
                     } else if (url) {
@@ -128,7 +129,7 @@ editorSvc.$on('inited', () => {
           
           const uploadedRate = uploadedBytes / totalBytes;
           divBarElement.style.width = uploadedRate * 300 + "px";
-          divBarElement.innerHTML = Math.round(uploadedRate * 300 / 3) + "%";
+          divBarElement.innerHTML = Math.floor(uploadedRate * 300 / 3) + "%";
           
           dropZoneElement.classList.remove('drag-drop');
           dropZoneElement.classList.add('drag-drop__filled');

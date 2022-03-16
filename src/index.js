@@ -89,7 +89,7 @@ window.addEventListener('handleWhenDragDropped', function (e) {
           i = i + 1;
           callInProgress(i)
         }
-      }, 40)
+      }, 10)
     }
 
     callInProgress(1);

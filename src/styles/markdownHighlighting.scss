@@ -369,7 +369,8 @@
 .in-progress-border {
   width: 304px;
   height: 34px;
-  border: 2px solid #009578;
+  border: 2px dashed #009578;
+  border-radius: 10px;
 }
 
 .in-progress-bar {
@@ -379,4 +380,5 @@
   text-align: center;
   color: white;
   max-width: 300px;
+  border-radius: 5px;
 }
