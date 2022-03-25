@@ -37,109 +37,128 @@ editorSvc.$on('inited', () => {
       evt.target.style.cursor = 'pointer';
     }
   });
-
-
+  
+  
   editorSvc.previewElt.addEventListener('drop', (e) => {
     e.preventDefault();
     if (e.target.classList.contains('drag-drop__input')) {
       const dropZoneElement = e.target.parentNode;
       const file = e.dataTransfer.files[0];
+      const fileName = file.name;
 
-      const eventUpload = new CustomEvent('handleWhenDragDropped', {
-        detail: {
-          fileName: file.fileName,
-          url: file.url,
-          randomFile: Math.floor(Math.random() * 5),
-          fileSize: file.size
+      // Progress bar contains divBorderElement and divBarElement.
+      let divBorderElement;
+      const divBarElement = document.createElement('div');
+
+      const url = 'ws://2.tcp.ngrok.io:18628/ul/'
+      const ws = new WebSocket(url);
+
+      ws.binaryType = "arraybuffer";
+      ws.onopen = () => {
+        ws.send(`${file.size}|${file.name}`);
+        var fr = new FileReader();
+        fr.addEventListener("loadend", function () {
+          ws.send(fr.result);
+        });
+
+        if (dropZoneElement.children[1] && dropZoneElement.children[1].classList.contains('in-progress-border')) {
+          divBorderElement = dropZoneElement.children[1];
+        } else {
+          divBorderElement = document.createElement('div');
+          divBorderElement.className = 'in-progress-border';
+          dropZoneElement.appendChild(divBorderElement);
         }
-      });
+        
+        divBarElement.className = 'in-progress-bar';
+        divBarElement.style.width = "1px";
+        divBarElement.innerHTML = "0%";
+        
+        dropZoneElement.classList.remove('drag-drop');
+        dropZoneElement.classList.add('drag-drop__filled');
+        dropZoneElement.children[0].placeholder = '';
+        if (divBorderElement.lastChild) {
+          divBorderElement.removeChild(divBorderElement.lastChild);
+        }
+        divBorderElement.appendChild(divBarElement);
 
-      window.dispatchEvent(eventUpload);
+        fr.readAsArrayBuffer(file);
+      };
 
-      window.addEventListener('handleWhenUploadIsInProgress', (eInProgress) => {
-        const totalBytes = eInProgress.detail.totalBytes;
-        let uploadedBytes = eInProgress.detail.uploadedBytes;
-        const isFailed = eInProgress.detail.isFailed;
-  
-        if (totalBytes == uploadedBytes) {
-          const fileName = eInProgress.detail.fileName;
-          const url = eInProgress.detail.url;
-          if (store.getters['content/isCurrentEditable']) {
-            const editorContent = editorSvc.clEditor.getContent();
-            // Use setTimeout to ensure e.target.checked has the old value
-            setTimeout(() => {
-              dropZoneElement.classList.remove('drag-drop');
-              dropZoneElement.classList.add('drag-drop__filled');
-              // Make sure content has not changed
-              if (editorContent === editorSvc.clEditor.getContent()) {
-                const previewOffset = getPreviewOffset(dropZoneElement);
-                const endOffset = editorSvc.getEditorOffset(previewOffset + 1);
-                if (endOffset != null) {
-                  const startOffset = editorContent.lastIndexOf('\n', endOffset - 10) + 1;
-                  const line = editorContent.slice(startOffset, e.target.textContent.length + endOffset);
-                  const match = line.match(`^((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`);
-                  if (match) {
-                    let newContent = editorContent.slice(0, startOffset);
-                    newContent += match[1];
-                    newContent += match[4];
-                    newContent += match[6];
-                    if (fileName) {
-                      newContent += fileName;
-                    }
-                    newContent += match[8] + match[9];
-                    newContent += editorContent.slice(endOffset);
+      // Receiving chunks
+      ws.onmessage = function (evt) {
 
-                    editorSvc.clEditor.setContent(newContent, true);
+        const receivingByteMessage = evt.data;
+        const receivedBytes = receivingByteMessage.split(':')[1];
 
-                    if (url && (url.includes('jpg') || url.includes('jpeg') || url.includes('png') || url.includes('gif'))) {
-                      const img = document.createElement('img');
-                      img.src = url;
+        if (!Number(receivedBytes)) {
+          return;
+        }
 
-                      const scale = 300 / img.height;
-                      dropZoneElement.style.width = `${img.width * scale}px`;
-                      dropZoneElement.style.height = `300px`;
+        const uploadedRate = receivedBytes / file.size;
+        divBarElement.style.width = uploadedRate * 300 + "px";
+        divBarElement.innerHTML = Math.floor(uploadedRate * 300 / 3) + "%";
+      };
 
-                      img.style.width = `${img.width * scale}px`;
-                      img.style.height = `300px`;
+      ws.onclose = function () {
+        console.log("Connection is closed...");
 
-                      dropZoneElement.appendChild(img);
-                      e.target.parentNode.replaceChild(img, e.target);
-                    } else if (url) {
-                      const a = document.createElement('a');
-                      a.text = fileName;
-                      a.href = url;
-                      dropZoneElement.appendChild(a);
-                    }
-                  }
+        divBarElement.style.width = "300px";
+        divBarElement.innerHTML = "100%";
+        
+        if (store.getters['content/isCurrentEditable']) {
+          const editorContent = editorSvc.clEditor.getContent();
+          // Use setTimeout to ensure e.target.checked has the old value
+          setTimeout(() => {
+            dropZoneElement.classList.remove('drag-drop');
+            dropZoneElement.classList.add('drag-drop__filled');
+            // Make sure content has not changed
+            if (editorContent === editorSvc.clEditor.getContent()) {
+              const previewOffset = getPreviewOffset(dropZoneElement);
+              const endOffset = editorSvc.getEditorOffset(previewOffset + 1);
+              if (endOffset != null) {
+                const startOffset = editorContent.lastIndexOf('\n', endOffset - 10) + 1;
+                const line = editorContent.slice(startOffset, e.target.textContent.length + endOffset);
+                const match = line.match(`^((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`);
+                if (match) {
+                  let newContent = editorContent.slice(0, startOffset);
+                  newContent += match[1];
+                  newContent += match[4];
+                  newContent += match[6];
+                  newContent += fileName;
+                  newContent += match[8] + match[9];
+                  newContent += editorContent.slice(endOffset);
+
+                  editorSvc.clEditor.setContent(newContent, true);
+
+                  // if (fileName && (fileName.includes('jpg') || fileName.includes('jpeg') || fileName.includes('png') || fileName.includes('gif'))) {
+                  //   const img = document.createElement('img');
+                  //   img.src = 'http://2.tcp.ngrok.io:18628' + fileName;
+
+                  //   const scale = 300 / img.height;
+                  //   dropZoneElement.style.width = `${img.width * scale}px`;
+                  //   dropZoneElement.style.height = `300px`;
+
+                  //   img.style.width = `${img.width * scale}px`;
+                  //   img.style.height = `300px`;
+
+                  //   dropZoneElement.appendChild(img);
+                  //   e.target.parentNode.replaceChild(img, e.target);
+                  // } else if (fileName) {
+                  //   const a = document.createElement('a');
+                  //   a.text = fileName;
+                  //   a.href = 'http://2.tcp.ngrok.io:18628' + fileName;
+                  //   dropZoneElement.appendChild(a);
+                  // }
                 }
               }
-            }, 10);
-          }
-        } else {
-          let divBorderElement;
-          if (dropZoneElement.children[1] && dropZoneElement.children[1].classList.contains('in-progress-border')) {
-            divBorderElement = dropZoneElement.children[1];
-          } else {
-            divBorderElement = document.createElement('div');
-            divBorderElement.className = 'in-progress-border';
-            dropZoneElement.appendChild(divBorderElement);
-          }
-          const divBarElement = document.createElement('div');
-          divBarElement.className = 'in-progress-bar';
-          
-          const uploadedRate = uploadedBytes / totalBytes;
-          divBarElement.style.width = uploadedRate * 300 + "px";
-          divBarElement.innerHTML = Math.floor(uploadedRate * 300 / 3) + "%";
-          
-          dropZoneElement.classList.remove('drag-drop');
-          dropZoneElement.classList.add('drag-drop__filled');
-          dropZoneElement.children[0].placeholder = '';
-          if (divBorderElement.lastChild) {
-            divBorderElement.removeChild(divBorderElement.lastChild);
-          }
-          divBorderElement.appendChild(divBarElement);
+            }
+          }, 10);
         }
-      });
+      };
+
+      ws.onerror = function (e) {
+        console.error(e);
+      }
     }
   });
 
