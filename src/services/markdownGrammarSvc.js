@@ -362,6 +362,14 @@ export default {
         'drag-drop-link': new RegExp(`(\\[(.+|.?)\\])`)
       },
     };
+
+    rest.collapsible = {
+      pattern: new RegExp('^/{([\\s\\S]*)}/$', 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp('/{|}/'),
+      },
+    };
+
     if (options.del) {
       rest.del = {
         pattern: /(^|[^\w*])(~~)[\s\S]*?\2(?=([^\w*]|$))/gm,

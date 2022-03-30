@@ -89,7 +89,8 @@ export default {
       typographer: true,
       threeStateCheckbox: true,
       dragDrop: true,
-      embedYt: true
+      embedYt: true,
+      collapsible: true
     },
     emoji: {
       enabled: true,

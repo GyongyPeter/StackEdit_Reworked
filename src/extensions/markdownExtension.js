@@ -12,6 +12,7 @@ import markdownitAnchor from './libs/markdownItAnchor';
 import extensionSvc from '../services/extensionSvc';
 import markdownItDragDrop from './libs/markdownItDragDrop';
 import markdownItYoutubeEmbed from './libs/markdownItYoutubeEmbed';
+import markdownCollapsible from './libs/markdownCollapsible';
 
 const coreBaseRules = [
   'normalize',
@@ -118,6 +119,9 @@ extensionSvc.onInitConverter(0, (markdown, options) => {
   }
   if (options.embedYt) {
     markdown.use(markdownItYoutubeEmbed);
+  }
+  if (options.collapsible) {
+    markdown.use(markdownCollapsible);
   }
   markdown.use(markdownitAnchor);
 

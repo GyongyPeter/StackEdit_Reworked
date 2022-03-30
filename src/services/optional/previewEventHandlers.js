@@ -3,6 +3,7 @@ import store from '../../store';
 
 const regExpTask = /^([ \t]*(?:[*+-]|\d+\.)[ \t]+\[)[ xX](\] .*)/;
 const regExpThreeStateCheckbox = new RegExp('^(.?[ \\t]|.+[ \\t]|)([€]+[ 123])([\\s\\S]*)$');
+const regExpForCollapsible = new RegExp('/{[\\s\\S]*}/');
 
 editorSvc.$on('inited', () => {
   const getPreviewOffset = (elt) => {
@@ -29,6 +30,37 @@ editorSvc.$on('inited', () => {
 
     if (evt.target.nodeName === 'LI') {
       handleClickEvent(evt, regExpThreeStateCheckbox, handleThreeStateCheckboxContent);
+    }
+
+    if (evt.target.classList.contains('collapsible-button')) {
+      evt.preventDefault();
+      if (store.getters['content/isCurrentEditable']) {
+        const editorContent = editorSvc.clEditor.getContent();
+        // Use setTimeout to ensure evt.target.checked has the old value
+        setTimeout(() => {
+          // Make sure content has not changed
+          if (editorContent === editorSvc.clEditor.getContent()) {
+            const content_ = evt.target.nextSibling;
+            const previewOffset = getPreviewOffset(evt.target);
+            const endOffset = editorSvc.getEditorOffset(previewOffset + 1);
+            if (endOffset != null) {
+              const startOffset = editorContent.lastIndexOf('\n', endOffset);
+              const end = editorContent.indexOf('}/', startOffset + 1);
+              const line = editorContent.slice(startOffset, end + 2);
+              const match = line.match(regExpForCollapsible);
+              if (match) {
+                evt.target.classList.toggle("active");
+                var content = evt.target.nextElementSibling;
+                if (content.style.display === "block") {
+                  content.style.display = "none";
+                } else {
+                  content.style.display = "block";
+                }
+            }
+          }
+        }
+        }, 10);
+      }
     }
   });
 
@@ -176,7 +208,6 @@ editorSvc.$on('inited', () => {
             const startOffset = editorContent.lastIndexOf('\n', endOffset) + 1;
             const line = editorContent.slice(startOffset, evt.target.textContent.length + endOffset);
             const match = line.match(regExp);
-            debugger
             if (match) {
               functionReference(evt, editorContent, startOffset, evt.target.textContent.length + endOffset, match);
             }

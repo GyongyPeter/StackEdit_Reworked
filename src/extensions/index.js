@@ -4,3 +4,4 @@ import './katexExtension';
 import './markdownExtension';
 import './mermaidExtension';
 import './dragDropExtension';
+import './collapsibleExtension';
