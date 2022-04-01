@@ -32,6 +32,7 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
                         if (fileName && fileName.includes(...imageExtensions)) {
                             htmlElement = document.createElement('img');
                             htmlElement.src = 'http://2.tcp.ngrok.io:18628/' + fileName;
+                            //htmlElement.src = "https://cdn.nwmgroups.hu/s/img/i/1408/20140807foto-szelfie-makako-majom-fenykep.jpg?w=800&h=1106&t=5";
                             
                             const figCaption = document.createElement('figcaption');
                             figCaption.textContent = fileName;
@@ -44,6 +45,7 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
 
                             const img = new Image();
                             img.src = htmlElement.src;
+                            //img.src = "https://cdn.nwmgroups.hu/s/img/i/1408/20140807foto-szelfie-makako-majom-fenykep.jpg?w=800&h=1106&t=5";
                             img.onload = function () {
                                 htmlElement.style.height = `300px`;
                                 const scale = 300 / this.height;

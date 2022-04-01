@@ -209,6 +209,13 @@ export default {
       },
     };
 
+    defs.collapsible = {
+      pattern: new RegExp('^((/{[\\s\\S]*\n)|(}/))', 'gm'),
+      inside: {
+        'cl cl-hash': new RegExp('(/{[\\S ]*\n)|(}/)'),
+      },
+    };
+
     Object.entries(defs).forEach(([name, def]) => {
       grammars.main[name] = def;
       grammars.list[name] = def;
@@ -363,12 +370,7 @@ export default {
       },
     };
 
-    rest.collapsible = {
-      pattern: new RegExp('^/{([\\s\\S]*)}/$', 'gm'),
-      inside: {
-        'cl cl-hash': new RegExp('/{|}/'),
-      },
-    };
+
 
     if (options.del) {
       rest.del = {

@@ -15,7 +15,7 @@ module.exports = (md) => {
         const token = tokens[i];
 
         if (token.content &&
-          token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+[ 123][\s\S]*$/gm)) {
+          token.content.match(/€€€[123]/gm)) {
 
           if(token.content.match(/^(.?[ \t]|.+[ \t]|)[€]+1[\s\S]*$/gm)) {
             token.content = token.content.replace("€€€1", '\u2753');

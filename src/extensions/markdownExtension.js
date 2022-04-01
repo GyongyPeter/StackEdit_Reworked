@@ -190,25 +190,23 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
   elt.querySelectorAll('p').cl_each((spanElt_) => {
     const innerText = spanElt_.innerText;
     const innerHtml = spanElt_.innerHTML;
-    const match = innerText.match(new RegExp(`^((.|\n)*){(YT|yt)}:[ \t]\\((.*)(youtube.com)(.*)\\)(.*)$`, 'm'));
+    const matchHTML = innerHtml.match(new RegExp(`^([\\s\\S]*)({(YT|yt)}:)[ \t]\\((.*)(youtube.com)(.*)\\)([\\s\\S]*)$`, 'm'));
+    const matchText = innerText.match(new RegExp(`^([\\s\\S]*)({(YT|yt)}:)[ \t]\\((.*)(youtube.com)(.*)\\)([\\s\\S]*)$`, 'm'));
 
-    if (match) {
+    if (matchHTML && matchText) {
       const iFrame = document.createElement('iframe');
       iFrame.className = 'yt-embed';
       spanElt_.parentNode.replaceChild(iFrame, spanElt_);
 
-      if (match[1] && match !== '' || match[2] && match[2] !== '') {
-        const p = document.createElement('p');
-        const idx1 = innerHtml.indexOf('{yt}: ');
-        const idx2 = innerHtml.indexOf('{YT}: ');
+      if (matchHTML[1] && matchHTML[7]) {
+        const pBefore = document.createElement('p');
+        pBefore.innerHTML = matchHTML[1];
 
-        if (idx1 != -1) {
-          p.innerHTML = innerHtml.slice(0, idx1);
-        } else if (idx2 != -1) {
-          p.innerHTML = innerHtml.slice(0, idx2);
-        }
+        const pAfter = document.createElement('p');
+        pAfter.innerHTML = matchHTML[7];
 
-        iFrame.parentNode.insertBefore(p, iFrame);
+        iFrame.parentNode.insertBefore(pBefore, iFrame);
+        iFrame.parentNode.appendChild(pAfter);
       }
 
       iFrame.width = '560px';
@@ -217,11 +215,11 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
       iFrame.frameborder = 0;
 
       const ytWatchString = '/watch?v=';
-      if (match[6].includes(ytWatchString)) {
-        const index = match[6].indexOf(ytWatchString);
-        match[6] = match[6].slice(index + ytWatchString.length);
+      if (matchText[6].includes(ytWatchString)) {
+        const index = matchText[6].indexOf(ytWatchString);
+        matchText[6] = matchText[6].slice(index + ytWatchString.length);
       }
-      iFrame.src = match[4] + match[5] + '/embed/' + match[6];
+      iFrame.src = matchText[4] + matchText[5] + '/embed/' + matchText[6];
     }
   });
 });

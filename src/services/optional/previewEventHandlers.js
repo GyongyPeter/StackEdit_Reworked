@@ -28,13 +28,13 @@ editorSvc.$on('inited', () => {
       handleClickEvent(evt, regExpThreeStateCheckbox, handleThreeStateCheckboxContent);
     }
 
-    if (evt.target.nodeName === 'LI') {
+    if (evt.target.nodeName === 'LI' || evt.target.nodeName === 'P') {
       handleClickEvent(evt, regExpThreeStateCheckbox, handleThreeStateCheckboxContent);
     }
 
     if (evt.target.classList.contains('collapsible-button')) {
       evt.preventDefault();
-      if (store.getters['content/isCurrentEditable']) {
+      //if (store.getters['content/isCurrentEditable']) {
         const editorContent = editorSvc.clEditor.getContent();
         // Use setTimeout to ensure evt.target.checked has the old value
         setTimeout(() => {
@@ -60,7 +60,7 @@ editorSvc.$on('inited', () => {
           }
         }
         }, 10);
-      }
+      //}
     }
   });
 
@@ -196,7 +196,7 @@ editorSvc.$on('inited', () => {
 
   const handleClickEvent = function (evt, regExp, functionReference) {
     evt.preventDefault();
-    if (store.getters['content/isCurrentEditable']) {
+    //if (store.getters['content/isCurrentEditable']) {
       const editorContent = editorSvc.clEditor.getContent();
       // Use setTimeout to ensure evt.target.checked has the old value
       setTimeout(() => {
@@ -214,7 +214,7 @@ editorSvc.$on('inited', () => {
           }
         }
       }, 10);
-    }
+    //}
   };
 
   const handleTaskContent = function (evt, editorContent, startOffset, endOffset, match) {
