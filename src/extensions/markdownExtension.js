@@ -198,7 +198,7 @@ extensionSvc.onSectionPreview((elt, options, isEditor) => {
       iFrame.className = 'yt-embed';
       spanElt_.parentNode.replaceChild(iFrame, spanElt_);
 
-      if (matchHTML[1] && matchHTML[7]) {
+      if ((matchHTML[1] || matchHTML[1] === '') && (matchHTML[7] || matchHTML[7] === '')) {
         const pBefore = document.createElement('p');
         pBefore.innerHTML = matchHTML[1];
 

@@ -357,13 +357,13 @@ export default {
     };
 
     rest.threeStateCheckbox = {
-      pattern: new RegExp(`^(.*)(€€€+[ 123])(.*)$`, 'gm'),
+      pattern: /^([\s\S]*)(€€€[123])([\s\S]*)$/gm,
       inside: {
         'cl cl-hash': new RegExp(`[€]+[ 123]`),
       },
     };
     rest.dragDrop = {
-      pattern: new RegExp(`(^|^$dd)((.|\n)?|(.|\n)+|)(\\$dd)(([ \t]\\[)(.+|.?)(\\]))((.|\n)?|(.|\n)+)$`, 'gm'),
+      pattern: /^([\s\S]*)\$dd[ \t]\[([\s\S]*)\]([\s\S]*)$/gm,
       inside: {
         'cl cl-hash': new RegExp(`\\$dd`),
         'drag-drop-link': new RegExp(`(\\[(.+|.?)\\])`)
